@@ -1,0 +1,43 @@
+{% comment %} JSKLegalInsights\JSKLegalInsightsapp\templates\analyzer.html {% endcomment %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 class="mb-4 animate__animated animate__fadeInDown">Legal Document Analyzer</h1>
+    
+    <p class="lead text-muted animate__animated animate__fadeInUp">
+        Upload a legal document to analyze its content using AI.
+    </p>
+
+    <div class="card shadow-lg p-4 mt-4 animate__animated animate__zoomIn">
+        <form method="post" enctype="multipart/form-data" class="text-center">
+            {% csrf_token %}
+            <input type="file" name="document" class="form-control mb-3">
+            
+            <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                <i class="fas fa-upload"></i> Analyze Document
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Add CSS animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<style>
+    h1 {
+        color: #007bff;
+        font-weight: bold;
+    }
+    .card {
+        border-radius: 10px;
+        background: #f8f9fa;
+        transition: transform 0.3s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.02);
+    }
+    .btn {
+        border-radius: 25px;
+    }
+</style>
+{% endblock %}

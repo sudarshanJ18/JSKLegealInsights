@@ -1,0 +1,455 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Include AOS for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<style>
+    /* Custom styles */
+    .portfolio-header {
+        text-align: center;
+        padding: 80px 0;
+        background: linear-gradient(to right, #2c3e50, #4b6cb7);
+        color: white;
+        margin-bottom: 50px;
+    }
+
+    .portfolio-header h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .portfolio-header .subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+    }
+
+    .about-section {
+        padding: 60px 0;
+        background: #fff;
+    }
+
+    .profile-image {
+        border-radius: 50%;
+        max-width: 250px;
+        border: 5px solid #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-heading {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .section-heading:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4b6cb7;
+    }
+
+    .experience-item, .education-item, .project-item {
+        margin-bottom: 30px;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #fff;
+    }
+
+    .experience-item:hover, .education-item:hover, .project-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 30px;
+    }
+
+    .timeline-item:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 2px;
+        background: #e9ecef;
+    }
+
+    .timeline-item:after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -8px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #4b6cb7;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 2px #4b6cb7;
+    }
+
+    .date-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        background: #4b6cb7;
+        color: white;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+
+    .skills-section {
+        background: #f8f9fa;
+        padding: 60px 0;
+    }
+
+    .skill-category {
+        margin-bottom: 30px;
+    }
+
+    .skill-pill {
+        display: inline-block;
+        padding: 8px 20px;
+        background: #fff;
+        border-radius: 30px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: #2c3e50;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .skill-pill:hover {
+        background: #4b6cb7;
+        color: white;
+        border-color: #4b6cb7;
+    }
+
+    .project-image {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .contact-section {
+        background: #2c3e50;
+        color: white;
+        padding: 60px 0;
+    }
+
+    .contact-info {
+        margin-bottom: 30px;
+    }
+
+    .contact-info i {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        color: #4b6cb7;
+    }
+
+    .resume-btn {
+        background: #4b6cb7;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .resume-btn:hover {
+        background: #2c3e50;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+<!-- Header Section -->
+<div class="portfolio-header">
+    <div class="container">
+        <h1 data-aos="fade-down">Emily Johnson</h1>
+        <p class="subtitle" data-aos="fade-up">J.D. Candidate | Constitutional Law Focus</p>
+        <a href="#" class="resume-btn" data-aos="zoom-in" data-aos-delay="300">Download Resume</a>
+    </div>
+</div>
+
+<!-- About Section -->
+<section class="about-section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 text-center mb-4" data-aos="fade-right">
+                <img src="{% static 'images/profile.png' %}" alt="Emily Johnson" class="img-fluid profile-image">
+            </div>
+            <div class="col-lg-8" data-aos="fade-left">
+                <h2 class="section-heading">About Me</h2>
+                <p>I am a third-year law student at Columbia Law School with a focus on Constitutional Law and Civil Rights. My academic interests lie in the intersection of technology, privacy rights, and First Amendment issues. I have experience with legal research, brief writing, and have participated in moot court competitions focusing on appellate advocacy.</p>
+                <p>During my law school career, I've interned at the ACLU and worked as a summer associate at Davis & Johnson LLP, where I gained valuable experience in constitutional litigation and legal writing. I am seeking opportunities in public interest law or at firms specializing in civil liberties cases after graduation.</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong> Emily Johnson</p>
+                        <p><strong>Degree:</strong> J.D. Candidate (Expected 2026)</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Email:</strong> emily.johnson@law.columbia.edu</p>
+                        <p><strong>Location:</strong> New York, NY</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Education Section -->
+<section class="experience-section" id="education">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Education</h2>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="education-item">
+                        <span class="date-badge">2023 - Present</span>
+                        <h3>Juris Doctor (J.D.)</h3>
+                        <h4>Columbia Law School</h4>
+                        <p>Current GPA: 3.85/4.0</p>
+                        <ul>
+                            <li>Constitutional Law Review, Editor</li>
+                            <li>Harlan Fiske Stone Scholar</li>
+                            <li>Moot Court Honor Society</li>
+                            <li>Relevant Coursework: Constitutional Law, Civil Procedure, Legal Research and Writing, Administrative Law, First Amendment, Privacy Law</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="education-item">
+                        <span class="date-badge">2019 - 2023</span>
+                        <h3>Bachelor of Arts in Political Science</h3>
+                        <h4>University of Michigan</h4>
+                        <p>GPA: 3.92/4.0, <em>summa cum laude</em></p>
+                        <ul>
+                            <li>Honors Thesis: "Privacy Rights in the Digital Age: Constitutional Perspectives"</li>
+                            <li>Dean's List: All semesters</li>
+                            <li>Phi Beta Kappa Society</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section class="experience-section bg-light" id="experience">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Experience</h2>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="experience-item">
+                        <span class="date-badge">Summer 2024</span>
+                        <h3>Summer Associate</h3>
+                        <h4>Davis & Johnson LLP, New York, NY</h4>
+                        <ul>
+                            <li>Conducted legal research and drafted memoranda on various constitutional law issues</li>
+                            <li>Assisted in preparing briefs for federal court litigation involving First Amendment claims</li>
+                            <li>Participated in client meetings and strategy sessions for high-profile civil liberties cases</li>
+                            <li>Developed a comprehensive analysis of recent Supreme Court decisions affecting privacy rights</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="experience-item">
+                        <span class="date-badge">Fall-Spring 2023-2024</span>
+                        <h3>Legal Clinic Participant</h3>
+                        <h4>Columbia Law Civil Rights Clinic</h4>
+                        <ul>
+                            <li>Represented clients in civil rights cases under faculty supervision</li>
+                            <li>Drafted complaints, motions, and legal memoranda for active cases</li>
+                            <li>Conducted client interviews and fact investigations</li>
+                            <li>Participated in settlement negotiations and case strategy development</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="experience-item">
+                        <span class="date-badge">Summer 2023</span>
+                        <h3>Legal Intern</h3>
+                        <h4>American Civil Liberties Union (ACLU), Speech, Privacy & Technology Project</h4>
+                        <ul>
+                            <li>Assisted attorneys with research on emerging technology and privacy law issues</li>
+                            <li>Contributed to amicus briefs in First Amendment cases</li>
+                            <li>Analyzed proposed legislation for potential civil liberties implications</li>
+                            <li>Created educational materials explaining constitutional rights in the digital context</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects/Research Section -->
+<section class="projects-section" id="research">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Research & Publications</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="zoom-in">
+                <div class="project-item h-100">
+                    <img src="{% static 'images/research1.jpg' %}" class="card-img-top project-image" alt="Constitutional Analysis">
+                    <div class="p-4">
+                        <h4>First Amendment and Digital Platforms</h4>
+                        <p>Published in Columbia Law Review (2024)</p>
+                        <p>Analysis of how traditional First Amendment doctrines apply to content moderation on social media platforms, examining recent circuit court splits on the issue.</p>
+                        <a href="#" class="btn btn-outline-primary mt-2">Read Publication</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="project-item h-100">
+                    <img src="{% static 'images/research2.jpg' %}" class="card-img-top project-image" alt="Case Analysis">
+                    <div class="p-4">
+                        <h4>Fourth Amendment in the Digital Age</h4>
+                        <p>Moot Court Brief (2023)</p>
+                        <p>Award-winning brief analyzing the application of Fourth Amendment protections to digital data and cloud storage, with specific focus on the third-party doctrine evolution.</p>
+                        <a href="#" class="btn btn-outline-primary mt-2">View Brief</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="project-item h-100">
+                    <img src="{% static 'images/research3.jpg' %}" class="card-img-top project-image" alt="Legal Analysis">
+                    <div class="p-4">
+                        <h4>Comparative Privacy Law Analysis</h4>
+                        <p>Independent Research Project (2023)</p>
+                        <p>A comparative analysis of privacy protection frameworks in the EU (GDPR) and United States, with recommendations for a comprehensive federal privacy statute.</p>
+                        <a href="#" class="btn btn-outline-primary mt-2">Read Analysis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="skills-section" id="skills">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Skills & Competencies</h2>
+        <div class="row">
+            <div class="col-md-6" data-aos="fade-right">
+                <div class="skill-category">
+                    <h4 class="mb-3">Legal Research & Writing</h4>
+                    <span class="skill-pill">Legal Research</span>
+                    <span class="skill-pill">Brief Writing</span>
+                    <span class="skill-pill">Case Analysis</span>
+                    <span class="skill-pill">Legal Memoranda</span>
+                    <span class="skill-pill">Bluebook Citation</span>
+                    <span class="skill-pill">Motion Practice</span>
+                </div>
+                
+                <div class="skill-category">
+                    <h4 class="mb-3">Subject Matter Expertise</h4>
+                    <span class="skill-pill">Constitutional Law</span>
+                    <span class="skill-pill">Civil Rights</span>
+                    <span class="skill-pill">First Amendment</span>
+                    <span class="skill-pill">Privacy Law</span>
+                    <span class="skill-pill">Administrative Law</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6" data-aos="fade-left">
+                <div class="skill-category">
+                    <h4 class="mb-3">Legal Technology</h4>
+                    <span class="skill-pill">Westlaw</span>
+                    <span class="skill-pill">LexisNexis</span>
+                    <span class="skill-pill">Bloomberg Law</span>
+                    <span class="skill-pill">PACER</span>
+                    <span class="skill-pill">Legal Analytics</span>
+                </div>
+                
+                <div class="skill-category">
+                    <h4 class="mb-3">Professional Skills</h4>
+                    <span class="skill-pill">Oral Advocacy</span>
+                    <span class="skill-pill">Client Counseling</span>
+                    <span class="skill-pill">Depositions</span>
+                    <span class="skill-pill">Trial Preparation</span>
+                    <span class="skill-pill">Negotiation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Awards & Honors Section -->
+<section class="awards-section" id="awards">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Awards & Honors</h2>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="experience-item" data-aos="fade-up">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">Best Oralist, Harlan Fiske Stone Moot Court Competition</h5>
+                                <p class="mb-0">Excellence in appellate advocacy</p>
+                            </div>
+                            <span class="date-badge">2024</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">Hamilton Fellowship for Constitutional Law</h5>
+                                <p class="mb-0">Merit-based scholarship for excellence in constitutional law studies</p>
+                            </div>
+                            <span class="date-badge">2023</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">Best Brief Award, National Privacy Law Competition</h5>
+                                <p class="mb-0">Top brief among 50+ law schools nationwide</p>
+                            </div>
+                            <span class="date-badge">2023</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">Harlan Fiske Stone Scholar</h5>
+                                <p class="mb-0">Academic excellence at Columbia Law School</p>
+                            </div>
+                            <span class="date-badge">2023-2024</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+</script>
+{% endblock %}

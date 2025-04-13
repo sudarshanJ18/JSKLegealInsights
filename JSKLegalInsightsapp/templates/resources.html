@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Resources{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Custom styles for the Resources page */
+    .resources-section {
+        padding: 80px 0;
+    }
+
+    .resource-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+    }
+
+    .resource-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .resource-card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .resource-card .card-body {
+        padding: 20px;
+    }
+
+    .resource-card .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: var(--primary);
+    }
+
+    .resource-card .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .resource-card .btn-resource {
+        background-color: var(--secondary);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .resource-card .btn-resource:hover {
+        background-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    /* Interactive tools section */
+    .tools-section {
+        background-color: var(--light);
+        padding: 60px 0;
+    }
+
+    .tool-item {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .tool-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .tool-item i {
+        font-size: 3rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .tool-item h4 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: var(--primary);
+    }
+
+    .tool-item p {
+        font-size: 1rem;
+        color: #555;
+    }
+    
+    /* Legal Articles and Documents sections */
+    .articles-section, .documents-section, .news-section {
+        padding: 60px 0;
+    }
+    
+    .articles-section {
+        background-color: #f8f9fa;
+    }
+    
+    .news-section {
+        background-color: var(--light);
+    }
+    
+    .resource-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    
+    .resource-list li {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: all 0.3s ease;
+    }
+    
+    .resource-list li:hover {
+        background-color: #f8f9fa;
+        transform: translateX(10px);
+    }
+    
+    .resource-list a {
+        color: var(--primary);
+        font-weight: 500;
+        text-decoration: none;
+    }
+    
+    .resource-list a:hover {
+        color: var(--secondary);
+    }
+    
+    .empty-message {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        font-style: italic;
+    }
+    
+    .section-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+    
+    .section-tabs .nav-link {
+        padding: 10px 20px;
+        margin: 0 5px;
+        border-radius: 30px;
+        color: var(--primary);
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .section-tabs .nav-link.active {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    .view-all-btn {
+        margin-top: 30px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Database Resources Section -->
+ 
+
+{% if db_resources %}
+<section class="resources-section" id="db-resources">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Resources</h2>
+        <div class="row">
+            {% for resource in db_resources %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="resource-card">
+                    <img src="{{ resource.image.url }}" alt="{{ resource.title }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ resource.title }}</h5>
+                        <p class="card-text">{{ resource.summary|truncatewords:20 }}</p>
+                        <a href="{{ resource.link }}" class="btn btn-resource" target="_blank">Explore</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- News Resources Section -->
+<section class="news-section" id="news-resources">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Latest Legal News</h2>
+        <div class="row">
+            {% for resource in news_resources|slice:":3" %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="resource-card">
+                    <img src="{{ resource.image }}" alt="{{ resource.title }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ resource.title }}</h5>
+                        <p class="card-text">{{ resource.summary|truncatewords:20 }}</p>
+                        <a href="{{ resource.link }}" class="btn btn-resource" target="_blank">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="empty-message">No news articles available at this time.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- View All News Button -->
+        {% if news_resources|length > 0 %}
+        <div class="view-all-btn" data-aos="fade-up">
+            <a href="{% url 'legal_news' %}" class="btn btn-resource">View All Legal News</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Interactive Tools Section -->
+<section class="tools-section" id="tools">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Interactive Tools</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="tool-item">
+                    <i class="fas fa-balance-scale"></i>
+                    <h4>Case Law Search</h4>
+                    <p>Search & analyze case law with advance legal research tool.</p>
+                    <a href="{% url 'case_law_search' %}" class="btn btn-resource">Try It</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="tool-item">
+                    <i class="fas fa-gavel"></i>
+                    <h4>Citation Generator</h4>
+                    <p>Generate accurate legal citations in seconds.</p>
+                    <a href="{% url 'citation_generator' %}" class="btn btn-resource">Try It</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="tool-item">
+                    <i class="fas fa-file-contract"></i>
+                    <h4>Contract Generator</h4>
+                    <p>Create custom legal contracts with ease.</p>
+                    <a href="{% url 'contract_generator' %}" class="btn btn-resource">Try It</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Legal Articles Section -->
+<section class="articles-section" id="articles">
+    <div class="container">
+        <h2>Legal Articles & Guides</h2>
+        
+        <div class="row">
+            {% for article in articles|slice:":3" %} 
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.summary|truncatechars:150 }}</p>
+                        <a href="{% url 'article_detail' article.id %}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <div class="text-center mt-3">
+            <a href="{% url 'articles_list' %}" class="btn btn-secondary">View All Articles</a>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

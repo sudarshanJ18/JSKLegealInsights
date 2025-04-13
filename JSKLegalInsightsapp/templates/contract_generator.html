@@ -1,0 +1,631 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="contract-container">
+    <!-- Back Button -->
+    <a href="{% url 'resources' %}" class="back-button">
+    </a>
+<div class="contract-container">
+    <div class="header-section">
+        <div class="title-area">
+            <h2 class="main-title">Contract Generator</h2>
+            <p class="subtitle">Create professional, legally-sound contracts in minutes</p>
+        </div>
+        <div class="header-decoration">
+            <svg class="document-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M70,10H30c-3.3,0-6,2.7-6,6v68c0,3.3,2.7,6,6,6h40c3.3,0,6-2.7,6-6V16C76,12.7,73.3,10,70,10z" fill="#f5f5f5" stroke="#3498db" stroke-width="2"/>
+                <line x1="40" y1="30" x2="60" y2="30" stroke="#3498db" stroke-width="2"/>
+                <line x1="40" y1="40" x2="60" y2="40" stroke="#3498db" stroke-width="2"/>
+                <line x1="40" y1="50" x2="60" y2="50" stroke="#3498db" stroke-width="2"/>
+                <line x1="40" y1="60" x2="60" y2="60" stroke="#3498db" stroke-width="2"/>
+                <line x1="40" y1="70" x2="60" y2="70" stroke="#3498db" stroke-width="2"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <form method="POST" class="contract-form">
+            {% csrf_token %}
+            <div class="form-grid">
+                {% for field in form %}
+                    <div class="form-field">
+                        <label class="field-label">{{ field.label }}</label>
+                        <div class="input-container">
+                            {{ field }}
+                            <div class="focus-bar"></div>
+                        </div>
+                        {% if field.help_text %}
+                            <div class="help-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="error-text">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="button-container">
+                <button type="submit" class="generate-button">
+                    <span class="button-icon">📄</span>
+                    <span class="button-text">Generate Contract</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if contract_text %}
+        <div class="contract-result">
+            <div class="result-header">
+                <h4>Generated Contract</h4>
+                <div class="action-buttons">
+                    <button id="copy-contract" class="action-button" title="Copy to clipboard">
+                        <span class="button-icon">📋</span>
+                        <span>Copy</span>
+                    </button>
+                    <button id="download-contract" class="action-button" title="Download as PDF">
+                        <span class="button-icon">💾</span>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+            <div class="contract-content">
+                <div class="paper-effect">
+                    <div class="contract-text" id="contract-text">{{ contract_text }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hidden form for PDF download -->
+        <form id="pdf-download-form" action="{% url 'download_contract_pdf' %}" method="POST" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="contract_text" id="hidden-contract-text" value="{{ contract_text }}">
+        </form>
+    {% endif %}
+</div>
+
+<style>
+    /* Base Styles */
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-bg: #f5f7fa;
+        --border-color: #dce4ec;
+        --success-color: #27ae60;
+    }
+
+    .contract-container {
+        max-width: 1000px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Header Section */
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        animation: slideDown 0.7s ease-out;
+    }
+
+    .title-area {
+        flex: 1;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        max-width: 500px;
+    }
+
+    .header-decoration {
+        flex: 0 0 80px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .document-icon {
+        width: 60px;
+        height: 60px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* Form Styles */
+    .form-container {
+        background: var(--light-bg);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        animation: fadeInUp 0.9s ease-out;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-field {
+        margin-bottom: 0.5rem;
+        position: relative;
+    }
+
+    .field-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+        color: var(--primary-color);
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .input-container {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+        color: var(--primary-color);
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .focus-bar {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    input:focus ~ .focus-bar, 
+    select:focus ~ .focus-bar, 
+    textarea:focus ~ .focus-bar {
+        width: 100%;
+        left: 0;
+    }
+
+    .help-text {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+    }
+
+    .error-text {
+        color: var(--accent-color);
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+    }
+
+    /* Button Styles */
+    .button-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .generate-button {
+        display: flex;
+        align-items: center;
+        padding: 0.9rem 2.2rem;
+        background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .generate-button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+        z-index: 1;
+        transition: all 0.6s ease;
+        opacity: 0;
+    }
+
+    .generate-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+    }
+
+    .generate-button:hover::before {
+        opacity: 1;
+        left: 100%;
+    }
+
+    .button-icon {
+        margin-right: 0.8rem;
+        font-size: 1.2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .button-text {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Contract Result */
+    .contract-result {
+        margin-top: 3rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        animation: slideUp 0.8s ease-out;
+    }
+
+    .result-header {
+        background: linear-gradient(to right, #f5f7fa, #e8ecf0);
+        padding: 1.2rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .result-header h4 {
+        margin: 0;
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: white;
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .action-button:hover {
+        background: var(--secondary-color);
+        color: white;
+    }
+
+    .contract-content {
+        padding: 0;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .paper-effect {
+        background-color: white;
+        padding: 2rem;
+        position: relative;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+    }
+
+    .paper-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 30px;
+        height: 100%;
+        width: 1px;
+        background: rgba(44, 62, 80, 0.1);
+    }
+
+    .contract-text {
+        font-family: 'Georgia', serif;
+        line-height: 1.6;
+        color: #2c3e50;
+        white-space: pre-line;
+    }
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .back-button:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .back-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-button::before {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-left: 2.5px solid #555;
+        border-bottom: 2.5px solid #555;
+        transform: rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .back-button:hover::before {
+        transform: translateX(-3px) rotate(45deg);
+        border-color: #333;
+    }
+    
+    .back-button::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 2.5px;
+        background-color: #555;
+        right: 14px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+    }
+    
+    .back-button:hover::after {
+        opacity: 1;
+        right: 16px;
+        background-color: #333;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+        from { 
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    @keyframes highlight {
+        0% { background-color: white; }
+        50% { background-color: #e3f2fd; }
+        100% { background-color: white; }
+    }
+
+    /* Loading indicator for form submission */
+    .submitting {
+        position: relative;
+        pointer-events: none;
+    }
+
+    .submitting::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: calc(50% - 10px);
+        right: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .contract-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+
+        .header-section {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .header-decoration {
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            margin-top: 1rem;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .result-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhance form field interactions
+        const formFields = document.querySelectorAll('input, select, textarea');
+        formFields.forEach(field => {
+            // Add animation on focus
+            field.addEventListener('focus', function() {
+                // Highlight label
+                const label = this.closest('.form-field').querySelector('.field-label');
+                if (label) {
+                    label.style.color = '#3498db';
+                }
+            });
+            
+            // Reset on blur
+            field.addEventListener('blur', function() {
+                // Reset label color
+                const label = this.closest('.form-field').querySelector('.field-label');
+                if (label) {
+                    label.style.color = '';
+                }
+            });
+        });
+        
+        // Animate form on submission
+        const form = document.querySelector('.contract-form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                const button = this.querySelector('.generate-button');
+                button.classList.add('submitting');
+                button.innerHTML = '<span class="button-text">Generating...</span>';
+            });
+        }
+        
+        // Copy functionality
+        const copyButton = document.getElementById('copy-contract');
+        if (copyButton) {
+            copyButton.addEventListener('click', function() {
+                const contractText = document.getElementById('contract-text').innerText;
+                navigator.clipboard.writeText(contractText).then(() => {
+                    // Visual feedback
+                    document.querySelector('.paper-effect').style.animation = 'highlight 1s ease';
+                    
+                    // Change button text temporarily
+                    const originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = '<span class="button-icon">✓</span><span>Copied</span>';
+                    
+                    setTimeout(() => {
+                        copyButton.innerHTML = originalText;
+                        document.querySelector('.paper-effect').style.animation = '';
+                    }, 2000);
+                });
+            });
+        }
+        
+        // Download functionality (actual PDF download)
+        const downloadButton = document.getElementById('download-contract');
+        if (downloadButton) {
+            downloadButton.addEventListener('click', function() {
+                // Change button text temporarily to indicate action
+                const originalText = downloadButton.innerHTML;
+                downloadButton.innerHTML = '<span class="button-icon">⏳</span><span>Preparing...</span>';
+                
+                // Update the hidden form value with current contract text
+                document.getElementById('hidden-contract-text').value = document.getElementById('contract-text').innerText;
+                
+                // Submit the hidden form to initiate the download
+                const pdfForm = document.getElementById('pdf-download-form');
+                pdfForm.submit();
+                
+                // Reset button text after a short delay
+                setTimeout(() => {
+                    downloadButton.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+        
+        // Subtle text animations for the contract result
+        const contractResult = document.querySelector('.contract-result');
+        if (contractResult) {
+            // Add staggered entrance for paragraphs
+            const paragraphs = contractResult.querySelectorAll('p');
+            paragraphs.forEach((p, index) => {
+                p.style.opacity = '0';
+                p.style.transform = 'translateY(10px)';
+                p.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                p.style.transitionDelay = (0.1 * index) + 's';
+                
+                setTimeout(() => {
+                    p.style.opacity = '1';
+                    p.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        }
+    });
+</script>
+{% endblock %}

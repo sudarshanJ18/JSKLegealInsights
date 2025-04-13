@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Legal News{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Same CSS as before */
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Legal News Section -->
+<section class="legal-news-section">
+    <div class="container">
+        <div class="news-header">
+            <h1 class="section-heading" data-aos="fade-up">Latest Legal News</h1>
+            <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">Stay updated with the latest developments in the legal world</p>
+        </div>
+        
+        {% if error_message %}
+        <div class="alert alert-warning" role="alert">
+            {{ error_message }}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'resources' %}" class="btn btn-primary">Back to Resources</a>
+        </div>
+        {% else %}
+        <div class="row">
+            {% for article in news_articles %}
+            <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="news-item">
+                    <img src="{{ article.image }}" alt="{{ article.title }}" class="img-fluid">
+                    <div class="news-content">
+                        <h3>{{ article.title }}</h3>
+                        <div class="news-meta">
+                            <span class="source">{{ article.source }}</span>
+                            {% if article.published_at %}
+                            <span class="date">{{ article.published_at|date:"F j, Y" }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="summary">{{ article.summary }}</p>
+                        {% if article.content %}
+                        <p class="content">{{ article.content|truncatewords:50 }}</p>
+                        {% endif %}
+                        <a href="{{ article.link }}" class="btn btn-resource" target="_blank">Read Full Article</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-message">
+                    <h3>No legal news articles available at this time.</h3>
+                    <p>Please check back later for updates.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

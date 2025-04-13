@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Latest Legal News</h2>
+<ul>
+    {% for article in articles %}
+    <li>
+        <h3><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h3>
+        <p>{{ article.description }}</p>
+        <small>Source: {{ article.source.name }}</small>
+    </li>
+    {% empty %}
+    <p>No legal news available at the moment.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% comment %} JSKLegalInsights\JSKLegalInsightsapp\templates\privacy.html {% endcomment %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Privacy Policy</h1>
+
+    <p><strong>Effective Date:</strong> March 18, 2025</p>
+
+    <h3>1. Introduction</h3>
+    <p>
+        Welcome to JSK Legal Insights. We respect your privacy and are committed to protecting your personal information. 
+        This Privacy Policy outlines how we collect, use, and safeguard your data when you use our website.
+    </p>
+
+    <h3>2. Information We Collect</h3>
+    <ul>
+        <li><strong>Personal Data:</strong> Name, email address, and contact details when you register.</li>
+        <li><strong>Usage Data:</strong> Your interactions with blog articles, legal research tools, and AI-based services.</li>
+        <li><strong>Cookies & Analytics:</strong> We use cookies to improve user experience and analyze traffic.</li>
+    </ul>
+
+    <h3>3. How We Use Your Information</h3>
+    <p>Your data is used for:</p>
+    <ul>
+        <li>Providing access to legal articles, case law summaries, and AI-driven tools.</li>
+        <li>Enhancing your learning experience through personalized content.</li>
+        <li>Ensuring the security and functionality of our platform.</li>
+    </ul>
+
+    <h3>4. Data Sharing & Security</h3>
+    <p>
+        We do not sell your personal information. Your data is securely stored and only shared with third-party services 
+        necessary for website operation (e.g., analytics, hosting providers).
+    </p>
+
+    <h3>5. Your Rights</h3>
+    <ul>
+        <li>You can request access to your personal data.</li>
+        <li>You may request deletion of your account and data.</li>
+        <li>You can opt out of non-essential data collection.</li>
+    </ul>
+
+    <h3>6. Contact Us</h3>
+    <p>
+        If you have any questions about this Privacy Policy, please contact us at 
+        <a href="{% url 'contact' %}">our contact page</a>.
+    </p>
+</div>
+{% endblock %}

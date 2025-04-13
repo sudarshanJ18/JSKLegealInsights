@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📂 Legal Document Templates & Forms</h2>
+
+    <!-- Search Bar -->
+    <form method="GET" class="mb-4 text-center">
+        <input type="text" name="q" class="form-control w-50 d-inline-block" placeholder="🔍 Search documents..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- Documents List -->
+    <div class="row">
+        {% for document in documents %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ document.title }}</h5>
+                    <p class="card-text text-muted">{{ document.description|truncatewords:15 }}</p>
+
+                    {% if document.file_type %}
+                    <p class="text-secondary">📄 Type: {{ document.file_type.upper }}</p>
+                    {% endif %}
+
+                    <a href="{% url 'download_document' document.id %}" class="btn btn-success">⬇️ Download</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">🚫 No documents available at this time.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if documents.has_other_pages %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if documents.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ documents.previous_page_number }}">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item active"><span class="page-link">{{ documents.number }}</span></li>
+
+            {% if documents.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ documents.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ documents.paginator.num_pages }}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
