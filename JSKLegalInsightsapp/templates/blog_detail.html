@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - {{ post.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-header {
+        background-color: var(--primary);
+        color: white;
+        padding: 3rem 0;
+    }
+    
+    .blog-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+    
+    .blog-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+    }
+    
+    .blog-meta {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .blog-author {
+        display: flex;
+        align-items: center;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    .author-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Blog Header -->
+<div class="blog-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="mb-3">{{ post.title }}</h1>
+                <p class="blog-meta">
+                    <i class="far fa-calendar-alt"></i> {{ post.created_at|date:"F j, Y" }} | 
+                    <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                    {% if post.updated_at != post.created_at %}
+                    | <i class="far fa-edit"></i> Updated on {{ post.updated_at|date:"F j, Y" }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog Content -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}">
+            {% endif %}
+            
+            <div class="blog-content">
+                {{ post.content|safe }}
+            </div>
+            
+            <!-- Author Bio -->
+            <div class="blog-author">
+                <img src="{% static 'images/author-placeholder.jpg' %}" class="author-image" alt="{{ post.author.get_full_name|default:post.author.username }}">
+                <div>
+                    <h5>{{ post.author.get_full_name|default:post.author.username }}</h5>
+                    <p class="mb-0">Law student passionate about legal education and making complex legal concepts accessible to all.</p>
+                </div>
+            </div>
+            
+            <!-- Back to Blog Link -->
+            <div class="text-center mt-5">
+                <a href="{% url 'blog' %}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Blog
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Site Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.blog_posts }}</h3>
+                                <p>Blog Posts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.case_studies }}</h3>
+                                <p>Case Studies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.legal_articles }}</h3>
+                                <p>Legal Articles</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.legal_documents }}</h3>
+                                <p>Document Templates</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.contact_messages }}</h3>
+                                <p>Contact Messages</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center mb-3">
+                                <h3>{{ stats.profiles }}</h3>
+                                <p>Profiles</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Content Management</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Django Admin Interface
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="{% url 'dashboard_articles' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Manage Legal Articles
+                            <span class="badge bg-primary rounded-pill">{{ stats.legal_articles }}</span>
+                        </a>
+                        <a href="{% url 'dashboard_documents' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Manage Legal Documents
+                            <span class="badge bg-primary rounded-pill">{{ stats.legal_documents }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">User Profiles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2 mb-3">
+                        <a href="{% url 'dashboard_profile' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus-circle"></i> Create New Profile
+                        </a>
+                    </div>
+                    
+                    <div class="list-group">
+                        {% for profile in profiles %}
+                        <a href="{% url 'dashboard_profile' profile_id=profile.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ profile.name }}</h5>
+                                <small>{{ profile.degree }}</small>
+                            </div>
+                            <p class="mb-1">{{ profile.title }}</p>
+                            <small>{{ profile.email }}</small>
+                        </a>
+                        {% empty %}
+                        <div class="list-group-item">
+                            No profiles found. Create a new profile to get started.
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

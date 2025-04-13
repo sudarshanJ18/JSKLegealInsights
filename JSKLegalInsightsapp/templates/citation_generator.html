@@ -1,0 +1,425 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="citation-container">
+    <div class="contract-container">
+        <!-- Back Button -->
+        <a href="{% url 'resources' %}" class="back-button">
+        </a>
+    <div class="header-section">
+        <h2 class="main-title">Legal Citation Generator</h2>
+        <p class="subtitle">Generate precise, properly formatted legal citations with ease</p>
+    </div>
+
+    <div class="form-container">
+        <form method="POST" class="citation-form">
+            {% csrf_token %}
+            <div class="form-fields">
+                {% for field in form %}
+                    <div class="form-field-wrapper">
+                        <label class="field-label">{{ field.label }}</label>
+                        <div class="input-wrapper">
+                            {{ field }}
+                        </div>
+                        {% if field.help_text %}
+                            <small class="field-help">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="action-section">
+                <button type="submit" class="generate-btn">
+                    <span class="btn-icon">⚖️</span>
+                    <span class="btn-text">Generate Citation</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if citation_result %}
+        <div class="citation-result">
+            <div class="result-header">
+                <h4>Generated Citation</h4>
+                <div class="action-buttons">
+                    <button class="copy-btn" id="copy-citation" title="Copy to clipboard">
+                        <span>Copy</span>
+                    </button>
+                </div>
+            </div>
+            <div class="result-content">
+                <p id="citation-text">{{ citation_result }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Main Container */
+    .citation-container {
+        max-width: 900px;
+        margin: 3rem auto;
+        padding: 2.5rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Header Section */
+    .header-section {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        animation: slideDown 0.7s ease-out;
+    }
+
+    .main-title {
+        color: #2c3e50;
+        font-size: 2.4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+    }
+
+    /* Form Container */
+    .form-container {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+        animation: fadeInUp 0.9s ease-out;
+    }
+
+    .citation-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-field-wrapper {
+        margin-bottom: 0.5rem;
+    }
+
+    .field-label {
+        display: block;
+        color: #34495e;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select,
+    .input-wrapper textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper select:focus,
+    .input-wrapper textarea:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        outline: none;
+    }
+
+    .field-help {
+        display: block;
+        color: #95a5a6;
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+    }
+
+    /* Action Section */
+    .action-section {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .generate-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 2rem;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(41, 128, 185, 0.3);
+    }
+
+    .generate-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #2980b9, #1c5a88);
+        box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+    }
+
+    .btn-icon {
+        margin-right: 0.7rem;
+        font-size: 1.2rem;
+    }
+
+    /* Citation Result */
+    .citation-result {
+        background: #f9fafb;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        animation: slideUp 0.7s ease-out;
+    }
+
+    .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: #f1f8fe;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .result-header h4 {
+        margin: 0;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .copy-btn {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: #fff;
+        color: #3498db;
+        border: 1px solid #3498db;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+        background: #3498db;
+        color: #fff;
+    }
+
+    .result-content {
+        padding: 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .result-content p {
+        margin: 0;
+        font-family: 'Georgia', serif;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #2c3e50;
+    }
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .back-button:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .back-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-button::before {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-left: 2.5px solid #555;
+        border-bottom: 2.5px solid #555;
+        transform: rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .back-button:hover::before {
+        transform: translateX(-3px) rotate(45deg);
+        border-color: #333;
+    }
+    
+    .back-button::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 2.5px;
+        background-color: #555;
+        right: 14px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+    }
+    
+    .back-button:hover::after {
+        opacity: 1;
+        right: 16px;
+        background-color: #333;
+    }
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+        from { 
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes highlight {
+        0% { background-color: #f9fafb; }
+        50% { background-color: #e3f2fd; }
+        100% { background-color: #f9fafb; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .citation-container {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+
+        .form-fields {
+            grid-template-columns: 1fr;
+        }
+
+        .main-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate form fields when they come into focus
+        const formInputs = document.querySelectorAll('input, select, textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-field-wrapper').style.transform = 'translateY(-3px)';
+                this.closest('.form-field-wrapper').style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.closest('.form-field-wrapper').style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Enhance the form submission with animation
+        const form = document.querySelector('.citation-form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                document.querySelector('.generate-btn').classList.add('submitting');
+                // We'd add a loading spinner here in a real implementation
+            });
+        }
+        
+        // Handle copy button functionality
+        const copyBtn = document.getElementById('copy-citation');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const citationText = document.getElementById('citation-text').textContent;
+                navigator.clipboard.writeText(citationText).then(function() {
+                    // Visual feedback
+                    document.querySelector('.result-content').style.animation = 'highlight 1s ease';
+                    
+                    // Change button text temporarily
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<span>Copied ✓</span>';
+                    
+                    setTimeout(function() {
+                        copyBtn.innerHTML = originalText;
+                        document.querySelector('.result-content').style.animation = '';
+                    }, 2000);
+                });
+            });
+        }
+        
+        // Add animation to newly loaded citation results
+        const citationResult = document.querySelector('.citation-result');
+        if (citationResult) {
+            // We force a repaint by accessing the offsetHeight property
+            // This ensures the animation runs even if the element was already on the page
+            citationResult.style.animation = 'none';
+            citationResult.offsetHeight;
+            citationResult.style.animation = 'slideUp 0.7s ease-out';
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Include AOS for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<style>
+    /* Custom Styling */
+    .dashboard-header {
+        text-align: center;
+        padding: 60px 0;
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        animation: fadeInDown 1s ease-in-out;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .dashboard-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+
+    .dashboard-card {
+        text-align: center;
+        padding: 30px;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        background: white;
+    }
+
+    .dashboard-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .dashboard-card i {
+        font-size: 3rem;
+        color: #0d6efd;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<!-- Header Section -->
+<div class="dashboard-header">
+    <h1 data-aos="fade-down">User Dashboard</h1>
+    <p data-aos="fade-up">Manage blogs, portfolio, and AI tools.</p>
+</div>
+
+<!-- Dashboard Section -->
+<div class="container dashboard-section">
+    <div class="row">
+        <!-- Blogs -->
+        <div class="col-md-4 mb-4" data-aos="zoom-in">
+            <div class="dashboard-card shadow-sm p-4">
+                <i class="fas fa-pen-fancy"></i>
+                <h4 class="mt-3">Manage Blogs</h4>
+                <p>Create, edit, and publish legal articles.</p>
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Blogs</a>
+            </div>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
+            <div class="dashboard-card shadow-sm p-4">
+                <i class="fas fa-briefcase"></i>
+                <h4 class="mt-3">Portfolio</h4>
+                <p>Showcase your legal research and case studies.</p>
+                <a href="{% url 'portfolio' %}" class="btn btn-primary">View Portfolio</a>
+            </div>
+        </div>
+
+        <!-- AI Tools -->
+        <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="400">
+            <div class="dashboard-card shadow-sm p-4">
+                <i class="fas fa-robot"></i>
+                <h4 class="mt-3">AI Tools</h4>
+                <p>Use AI-powered document analysis.</p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    AOS.init();  // Initialize animations
+</script>
+{% endblock %}

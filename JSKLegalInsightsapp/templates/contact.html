@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Include AOS for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<style>
+    /* Custom Styling */
+    .contact-header {
+        text-align: center;
+        padding: 60px 0;
+        background: linear-gradient(to right, #198754, #20c997);
+        color: white;
+        animation: fadeInDown 1s ease-in-out;
+    }
+
+    .contact-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .contact-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+
+    .contact-form {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-btn {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .contact-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<!-- Header Section -->
+<div class="contact-header">
+    <h1 data-aos="fade-down">Contact & Collaborate</h1>
+    <p data-aos="fade-up">Connect with legal professionals and students.</p>
+</div>
+
+<!-- Message Alerts -->
+<div class="container mt-3">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Contact Section -->
+<div class="container contact-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="contact-form" data-aos="fade-up">
+                <h4 class="mb-4 text-center">Get in Touch with Me</h4>
+                
+                <form method="POST" action="{% url 'contact' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Your Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="4" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 contact-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Media Section -->
+    <div class="text-center mt-5" data-aos="fade-up">
+        <h5>Follow Us</h5>
+        <p>Stay connected through our social channels.</p>
+        <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#" class="btn btn-outline-dark"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+</div>
+
+<script>
+    AOS.init();  
+</script>
+{% endblock %}

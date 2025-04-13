@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Blog{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-card {
+        height: 100%;
+    }
+    
+    .blog-image {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .blog-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .blog-excerpt {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5" data-aos="fade-up">
+        <div class="col-12 text-center">
+            <h1 class="section-heading">Legal Insights Blog</h1>
+            <p class="lead">Exploring current legal topics and providing valuable insights for legal professionals and enthusiasts.</p>
+        </div>
+    </div>
+    
+    <!-- Blog Posts -->
+    <div class="row">
+        {% for post in page_obj %}
+        <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+            <div class="card blog-card">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" class="card-img-top blog-image" alt="{{ post.title }}">
+                {% else %}
+                <img src="{% static 'images/blog-placeholder.jpg' %}" class="card-img-top blog-image" alt="Placeholder">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="blog-meta">
+                        <i class="far fa-calendar-alt"></i> {{ post.created_at|date:"F j, Y" }} | 
+                        <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                    </p>
+                    <div class="blog-excerpt">
+                        {{ post.content|safe|striptags|truncatewords:30 }}
+                    </div>
+                    <a href="{% url 'blog_detail' post.pk %}" class="btn btn-primary mt-3">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No blog posts yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="fas fa-chevron-left"></i> Previous</span>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next <i class="fas fa-chevron-right"></i></span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

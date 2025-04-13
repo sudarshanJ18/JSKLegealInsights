@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Legal Case Search Results</h2>
+
+<form method="GET" action="{% url 'fetch_legal_cases' %}">
+    <input type="text" name="search" placeholder="Search legal cases">
+    <button type="submit">Search</button>
+</form>
+
+{% if cases %}
+    <ul>
+        {% for case in cases %}
+            <li>
+                <strong>{{ case.citation }}:</strong>
+                <a href="{{ case.absolute_url }}" target="_blank">{{ case.caseName }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+
+{% endblock %}

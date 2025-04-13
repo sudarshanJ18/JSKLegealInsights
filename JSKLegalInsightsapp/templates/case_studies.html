@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Case Studies{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Custom styles for the Case Studies page */
+    .case-studies-section {
+        padding: 80px 0;
+    }
+
+    .case-study-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+    }
+
+    .case-study-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .case-study-card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .case-study-card .card-body {
+        padding: 20px;
+    }
+
+    .case-study-card .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: var(--primary);
+    }
+
+    .case-study-card .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .case-study-card .btn-read-more {
+        background-color: var(--secondary);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .case-study-card .btn-read-more:hover {
+        background-color: var(--primary);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Case Studies Section -->
+<section class="case-studies-section" id="case-studies">
+    <div class="container">
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Case Studies</h2>
+        <div class="row">
+            {% for case in case_studies %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="case-study-card">
+                    <img src="{{ case.image.url }}" alt="{{ case.title }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ case.title }}</h5>
+                        <p class="card-text">{{ case.summary|truncatewords:20 }}</p>
+                        <a href="{% url 'case_study_detail' case.id %}" class="btn btn-read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

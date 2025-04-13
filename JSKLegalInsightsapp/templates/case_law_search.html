@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="search-container">
+    <!-- Back Button -->
+    <a href="{% url 'resources' %}" class="back-button">
+    </a>
+    <h2 class="search-title">Search Case Laws</h2>
+
+    <form method="GET" class="search-form">
+        <div class="search-input-container">
+            <input type="text" name="q" placeholder="Search Case Law" value="{{ query }}" class="search-input">
+            <button type="submit" class="search-button">
+                <span class="search-icon">🔍</span>
+                <span class="button-text">Search</span>
+            </button>
+        </div>
+    </form>
+
+    <div class="results-container">
+        {% if results.error %}
+            <p class="error-message">{{ results.error }}</p>
+        {% elif results.cases %}
+            <h3 class="results-title">Found {{ results.cases|length }} results</h3>
+            <ul class="results-list">
+                {% for case in results.cases %}
+                    <li class="result-item">
+                        <div class="case-header">
+                            <strong class="case-title">{{ case.title }}</strong>
+                            <span class="case-date">{{ case.date }}</span>
+                        </div>
+                        <p class="case-snippet">{{ case.snippet|default:'No preview available' }}</p>
+                        <a href="{{ case.url }}" target="_blank" class="view-case-button">View Full Case</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-results">
+                <p>No results found for your search.</p>
+                <p class="no-results-suggestion">Try different keywords or broaden your search terms.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    /* Base Styling */
+    .search-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 50, 0.12);
+        font-family: 'Roboto', Arial, sans-serif;
+    }
+
+    .search-title {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.2rem;
+        font-weight: 700;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    /* Search Form */
+    .search-form {
+        margin-bottom: 2rem;
+    }
+
+    .search-input-container {
+        display: flex;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-input-container:hover, .search-input-container:focus-within {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        border: none;
+        outline: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .search-input:focus {
+        background-color: #f8f9fa;
+    }
+
+    .search-button {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .search-button:hover {
+        background: linear-gradient(135deg, #2980b9, #1a252f);
+    }
+
+    .search-icon {
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    /* Results Styling */
+    .results-container {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    .results-title {
+        color: #34495e;
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .results-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .result-item {
+        background: #f8f9fa;
+        margin-bottom: 1rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.5s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .result-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-item:nth-child(1) { animation-delay: 0.1s; }
+    .result-item:nth-child(2) { animation-delay: 0.2s; }
+    .result-item:nth-child(3) { animation-delay: 0.3s; }
+    .result-item:nth-child(4) { animation-delay: 0.4s; }
+    .result-item:nth-child(5) { animation-delay: 0.5s; }
+
+    .case-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+    }
+
+    .case-title {
+        color: #2c3e50;
+        font-size: 1.2rem;
+    }
+
+    .case-date {
+        background: #e0f7fa;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #0097a7;
+    }
+
+    .case-snippet {
+        margin: 0.8rem 0;
+        color: #546e7a;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .view-case-button {
+        display: inline-block;
+        margin-top: 0.8rem;
+        padding: 0.6rem 1.2rem;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .view-case-button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+
+    /* Error and No Results */
+    .error-message {
+        color: #e74c3c;
+        padding: 1rem;
+        background-color: #fadbd8;
+        border-radius: 6px;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 2rem;
+        color: #7f8c8d;
+        animation: pulse 2s infinite;
+    }
+
+    .no-results-suggestion {
+        font-style: italic;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .back-button:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .back-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-button::before {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-left: 2.5px solid #555;
+        border-bottom: 2.5px solid #555;
+        transform: rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .back-button:hover::before {
+        transform: translateX(-3px) rotate(45deg);
+        border-color: #333;
+    }
+    
+    .back-button::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 2.5px;
+        background-color: #555;
+        right: 14px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+    }
+    
+    .back-button:hover::after {
+        opacity: 1;
+        right: 16px;
+        background-color: #333;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 1; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .search-container {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+
+        .case-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .case-date {
+            margin-top: 0.5rem;
+        }
+
+        .button-text {
+            display: none;
+        }
+
+        .search-icon {
+            margin-right: 0;
+        }
+    }
+</style>
+
+<script>
+    // Add smooth scrolling to search results
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.querySelector('.search-form');
+        
+        searchForm.addEventListener('submit', function(e) {
+            // We don't prevent default because we want the form to submit
+            
+            // Add a class to animate the container
+            document.querySelector('.search-container').classList.add('searching');
+            
+            // Add a loading animation
+            const resultsContainer = document.querySelector('.results-container');
+            resultsContainer.innerHTML = '<div class="loading-spinner"></div>';
+        });
+        
+        // Animate result items on hover for additional effect
+        const resultItems = document.querySelectorAll('.result-item');
+        resultItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease';
+                this.style.backgroundColor = '#f1f8fe';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+        });
+    });
+</script>
+{% endblock %}
