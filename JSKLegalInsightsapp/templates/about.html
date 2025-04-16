@@ -7,37 +7,234 @@
 
 <style>
     /* Custom styles */
+    /* Animated Banner Styles */
     .portfolio-header {
-        text-align: center;
-        padding: 80px 0;
-        background: linear-gradient(to right, #2c3e50, #4b6cb7);
+        position: relative;
+        min-height: 500px;
+        background: linear-gradient(135deg, #2c3e50 0%, #4b6cb7 100%);
         color: white;
         margin-bottom: 50px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
     }
 
-    .portfolio-header h1 {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 10px;
+    /* Animated shapes background */
+    .animated-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
     }
 
-    .portfolio-header .subtitle {
-        font-size: 1.2rem;
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: float 15s infinite ease-in-out;
+    }
+    
+    .shape-1 {
+        width: 120px;
+        height: 120px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .shape-2 {
+        width: 80px;
+        height: 80px;
+        bottom: 10%;
+        right: 20%;
+        animation-delay: 2s;
+    }
+    
+    .shape-3 {
+        width: 180px;
+        height: 180px;
+        bottom: -50px;
+        left: 35%;
+        animation-delay: 4s;
+    }
+    
+    .shape-4 {
+        width: 60px;
+        height: 60px;
+        top: 30%;
+        right: 15%;
+        animation-delay: 6s;
+    }
+
+    /* Banner content container */
+    .banner-container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* Profile image side */
+    .banner-image-container {
+        position: relative;
+        width: 280px;
+        height: 280px;
+        margin-right: 40px;
+        flex-shrink: 0;
+    }
+
+    .banner-profile-image {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.2);
+        object-fit: cover;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease;
+        animation: profile-pulse 3s infinite alternate;
+    }
+
+    .banner-image-container:hover .banner-profile-image {
+        transform: scale(1.05);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .profile-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #4b6cb7;
+        color: white;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        border: 4px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        animation: floating 3s infinite ease-in-out;
+    }
+
+    /* Content side */
+    .banner-content {
+        flex: 1;
+    }
+
+    .typed-text-container {
+        height: 40px;
+        overflow: hidden;
         margin-bottom: 25px;
     }
 
-    .about-section {
-        padding: 60px 0;
-        background: #fff;
+    .banner-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        opacity: 0.9;
+        max-width: 600px;
     }
 
-    .profile-image {
+    .banner-quick-info {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .info-item {
+        margin-right: 30px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-item i {
+        font-size: 20px;
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
-        max-width: 250px;
-        border: 5px solid #fff;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
+    .social-links {
+        margin-top: 30px;
+    }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        margin-right: 12px;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        color: white;
+    }
+
+    .resume-btn {
+        background: #4b6cb7;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .resume-btn:hover {
+        background: linear-gradient(135deg, #182848 0%, #4b6cb7 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .resume-btn:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 100%;
+        transform: scale(1);
+        transition: all 0.5s ease;
+        opacity: 0;
+    }
+
+    .resume-btn:hover:after {
+        transform: scale(20);
+        opacity: 0;
+        transition: all 1s ease;
+    }
+
+    /* Section styles remain the same */
     .section-heading {
         position: relative;
         padding-bottom: 15px;
@@ -54,6 +251,18 @@
         width: 60px;
         height: 3px;
         background: #4b6cb7;
+    }
+
+    .about-section {
+        padding: 60px 0;
+        background: #fff;
+    }
+
+    .profile-image {
+        border-radius: 50%;
+        max-width: 250px;
+        border: 5px solid #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
     .experience-item, .education-item, .project-item {
@@ -143,50 +352,171 @@
         border-top-right-radius: 8px;
     }
 
-    .contact-section {
-        background: #2c3e50;
-        color: white;
-        padding: 60px 0;
+    /* Responsive styles */
+    @media (max-width: 992px) {
+        .portfolio-header {
+            padding: 60px 0;
+        }
+        
+        .banner-container {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .banner-image-container {
+            margin-right: 0;
+            margin-bottom: 40px;
+        }
+        
+        .section-heading:after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .banner-quick-info {
+            justify-content: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+        }
     }
-
-    .contact-info {
-        margin-bottom: 30px;
+    
+    /* Animations */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(10deg);
+        }
     }
-
-    .contact-info i {
-        font-size: 1.5rem;
-        margin-right: 10px;
-        color: #4b6cb7;
+    
+    @keyframes profile-pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(75, 108, 183, 0.4),
+                       0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        70% {
+            box-shadow: 0 0 0 15px rgba(75, 108, 183, 0),
+                       0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(75, 108, 183, 0),
+                       0 15px 35px rgba(0, 0, 0, 0.3);
+        }
     }
-
-    .resume-btn {
-        background: #4b6cb7;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        text-transform: uppercase;
-        font-weight: bold;
-        letter-spacing: 1px;
-        margin-top: 20px;
-        transition: all 0.3s ease;
+    
+    @keyframes floating {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    /* Typed text animation */
+    .typed-text {
+        position: relative;
         display: inline-block;
+        font-size: 2rem;
+        font-weight: bold;
     }
-
-    .resume-btn:hover {
-        background: #2c3e50;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        color: white;
-        text-decoration: none;
+    
+    .typed-cursor {
+        opacity: 1;
+        animation: typedCursor 0.7s infinite;
+    }
+    
+    @keyframes typedCursor {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
     }
 </style>
 
-<!-- Header Section -->
+<!-- Animated Portfolio Header -->
 <div class="portfolio-header">
-    <div class="container">
-        <h1 data-aos="fade-down">Emily Johnson</h1>
-        <p class="subtitle" data-aos="fade-up">J.D. Candidate | Constitutional Law Focus</p>
-        <a href="#" class="resume-btn" data-aos="zoom-in" data-aos-delay="300">Download Resume</a>
+    <!-- Animated Background Shapes -->
+    <div class="animated-bg">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+    
+    <div class="container banner-container">
+        <!-- Profile Image Side -->
+        <div class="banner-image-container" data-aos="fade-right">
+            {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="banner-profile-image">
+            {% else %}
+                <img src="{% static 'images/profile.png' %}" alt="{{ profile.name }}" class="banner-profile-image">
+            {% endif %}
+            
+            <!-- Profession Badge -->
+            <div class="profile-badge">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+        </div>
+        
+        <!-- Content Side -->
+        <div class="banner-content" data-aos="fade-left">
+            <h1>{{ profile.name }}</h1>
+            
+            <!-- Typed Text Animation -->
+            <div class="typed-text-container" data-aos="fade-up" data-aos-delay="200">
+                <span class="typed-text"></span>
+            </div>
+            
+            <p class="banner-subtitle" data-aos="fade-up" data-aos-delay="300">
+                {{ profile.about_me|truncatewords:30 }}
+            </p>
+            
+            <!-- Quick Info -->
+            <div class="banner-quick-info">
+                <div class="info-item" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>{{ profile.degree }}</span>
+                </div>
+                <div class="info-item" data-aos="fade-up" data-aos-delay="500">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ profile.location }}</span>
+                </div>
+                <div class="info-item" data-aos="fade-up" data-aos-delay="600">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ profile.email }}</span>
+                </div>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="social-links" data-aos="fade-up" data-aos-delay="700">
+                {% if profile.linkedin %}
+                    <a href="{{ profile.linkedin }}" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                {% endif %}
+                {% if profile.twitter %}
+                    <a href="{{ profile.twitter }}" class="social-icon"><i class="fab fa-twitter"></i></a>
+                {% endif %}
+                {% if profile.facebook %}
+                    <a href="{{ profile.facebook }}" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                {% endif %}
+                {% if profile.github %}
+                    <a href="{{ profile.github }}" class="social-icon"><i class="fab fa-github"></i></a>
+                {% endif %}
+            </div>
+            
+            <!-- Resume Button -->
+            {% if profile.resume_file %}
+                <a href="{{ profile.resume_file.url }}" class="resume-btn" data-aos="zoom-in" data-aos-delay="800">
+                    <i class="fas fa-download mr-2"></i> Download Resume
+                </a>
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -194,23 +524,10 @@
 <section class="about-section" id="about">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 text-center mb-4" data-aos="fade-right">
-                <img src="{% static 'images/profile.png' %}" alt="Emily Johnson" class="img-fluid profile-image">
-            </div>
-            <div class="col-lg-8" data-aos="fade-left">
+            <div class="col-lg-12" data-aos="fade-up">
                 <h2 class="section-heading">About Me</h2>
-                <p>I am a third-year law student at Columbia Law School with a focus on Constitutional Law and Civil Rights. My academic interests lie in the intersection of technology, privacy rights, and First Amendment issues. I have experience with legal research, brief writing, and have participated in moot court competitions focusing on appellate advocacy.</p>
-                <p>During my law school career, I've interned at the ACLU and worked as a summer associate at Davis & Johnson LLP, where I gained valuable experience in constitutional litigation and legal writing. I am seeking opportunities in public interest law or at firms specializing in civil liberties cases after graduation.</p>
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <p><strong>Name:</strong> Emily Johnson</p>
-                        <p><strong>Degree:</strong> J.D. Candidate (Expected 2026)</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Email:</strong> emily.johnson@law.columbia.edu</p>
-                        <p><strong>Location:</strong> New York, NY</p>
-                    </div>
-                </div>
+                <p>{{ profile.about_me|linebreaks }}</p>
+                <p>{{ profile.career_goal|linebreaks }}</p>
             </div>
         </div>
     </div>
@@ -222,34 +539,24 @@
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Education</h2>
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <div class="timeline-item" data-aos="fade-up">
+                {% for edu in educations %}
+                <div class="timeline-item" data-aos="fade-up" {% if not forloop.first %}data-aos-delay="{{ forloop.counter0|add:100 }}"{% endif %}>
                     <div class="education-item">
-                        <span class="date-badge">2023 - Present</span>
-                        <h3>Juris Doctor (J.D.)</h3>
-                        <h4>Columbia Law School</h4>
-                        <p>Current GPA: 3.85/4.0</p>
-                        <ul>
-                            <li>Constitutional Law Review, Editor</li>
-                            <li>Harlan Fiske Stone Scholar</li>
-                            <li>Moot Court Honor Society</li>
-                            <li>Relevant Coursework: Constitutional Law, Civil Procedure, Legal Research and Writing, Administrative Law, First Amendment, Privacy Law</li>
-                        </ul>
+                        <span class="date-badge">{{ edu.date_range }}</span>
+                        <h3>{{ edu.degree }}</h3>
+                        <h4>{{ edu.institution }}</h4>
+                        {% if edu.gpa %}<p>GPA: {{ edu.gpa }}</p>{% endif %}
+                        {% if edu.honors %}
+                            <ul>
+                                {% for honor in edu.honors%}
+                                    <li>{{ honor|safe }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if edu.description %}<p>{{ edu.description|linebreaks }}</p>{% endif %}
                     </div>
                 </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="education-item">
-                        <span class="date-badge">2019 - 2023</span>
-                        <h3>Bachelor of Arts in Political Science</h3>
-                        <h4>University of Michigan</h4>
-                        <p>GPA: 3.92/4.0, <em>summa cum laude</em></p>
-                        <ul>
-                            <li>Honors Thesis: "Privacy Rights in the Digital Age: Constitutional Perspectives"</li>
-                            <li>Dean's List: All semesters</li>
-                            <li>Phi Beta Kappa Society</li>
-                        </ul>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -261,47 +568,16 @@
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Experience</h2>
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <div class="timeline-item" data-aos="fade-up">
+                {% for exp in experiences %}
+                <div class="timeline-item" data-aos="fade-up" {% if not forloop.first %}data-aos-delay="{{ forloop.counter0|add:100 }}"{% endif %}>
                     <div class="experience-item">
-                        <span class="date-badge">Summer 2024</span>
-                        <h3>Summer Associate</h3>
-                        <h4>Davis & Johnson LLP, New York, NY</h4>
-                        <ul>
-                            <li>Conducted legal research and drafted memoranda on various constitutional law issues</li>
-                            <li>Assisted in preparing briefs for federal court litigation involving First Amendment claims</li>
-                            <li>Participated in client meetings and strategy sessions for high-profile civil liberties cases</li>
-                            <li>Developed a comprehensive analysis of recent Supreme Court decisions affecting privacy rights</li>
-                        </ul>
+                        <span class="date-badge">{{ exp.date_range }}</span>
+                        <h3>{{ exp.position }}</h3>
+                        <h4>{{ exp.organization }}{% if exp.location %}, {{ exp.location }}{% endif %}</h4>
+                        {{ exp.description|linebreaks }}
                     </div>
                 </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="experience-item">
-                        <span class="date-badge">Fall-Spring 2023-2024</span>
-                        <h3>Legal Clinic Participant</h3>
-                        <h4>Columbia Law Civil Rights Clinic</h4>
-                        <ul>
-                            <li>Represented clients in civil rights cases under faculty supervision</li>
-                            <li>Drafted complaints, motions, and legal memoranda for active cases</li>
-                            <li>Conducted client interviews and fact investigations</li>
-                            <li>Participated in settlement negotiations and case strategy development</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="experience-item">
-                        <span class="date-badge">Summer 2023</span>
-                        <h3>Legal Intern</h3>
-                        <h4>American Civil Liberties Union (ACLU), Speech, Privacy & Technology Project</h4>
-                        <ul>
-                            <li>Assisted attorneys with research on emerging technology and privacy law issues</li>
-                            <li>Contributed to amicus briefs in First Amendment cases</li>
-                            <li>Analyzed proposed legislation for potential civil liberties implications</li>
-                            <li>Created educational materials explaining constitutional rights in the digital context</li>
-                        </ul>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -312,41 +588,25 @@
     <div class="container">
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Research & Publications</h2>
         <div class="row">
-            <div class="col-md-4 mb-4" data-aos="zoom-in">
+            {% for pub in publications %}
+            <div class="col-md-4 mb-4" data-aos="zoom-in" {% if not forloop.first %}data-aos-delay="{{ forloop.counter0|add:100 }}"{% endif %}>
                 <div class="project-item h-100">
-                    <img src="{% static 'images/research1.jpg' %}" class="card-img-top project-image" alt="Constitutional Analysis">
+                    {% if pub.image %}
+                        <img src="{{ pub.image.url }}" class="card-img-top project-image" alt="{{ pub.title }}">
+                    {% else %}
+                        <img src="{% static 'images/research1.jpg' %}" class="card-img-top project-image" alt="{{ pub.title }}">
+                    {% endif %}
                     <div class="p-4">
-                        <h4>First Amendment and Digital Platforms</h4>
-                        <p>Published in Columbia Law Review (2024)</p>
-                        <p>Analysis of how traditional First Amendment doctrines apply to content moderation on social media platforms, examining recent circuit court splits on the issue.</p>
-                        <a href="#" class="btn btn-outline-primary mt-2">Read Publication</a>
+                        <h4>{{ pub.title }}</h4>
+                        <p>{{ pub.publication_type }} ({{ pub.year }})</p>
+                        <p>{{ pub.description }}</p>
+                        {% if pub.link %}
+                            <a href="{{ pub.link }}" class="btn btn-outline-primary mt-2">Read Publication</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
-                <div class="project-item h-100">
-                    <img src="{% static 'images/research2.jpg' %}" class="card-img-top project-image" alt="Case Analysis">
-                    <div class="p-4">
-                        <h4>Fourth Amendment in the Digital Age</h4>
-                        <p>Moot Court Brief (2023)</p>
-                        <p>Award-winning brief analyzing the application of Fourth Amendment protections to digital data and cloud storage, with specific focus on the third-party doctrine evolution.</p>
-                        <a href="#" class="btn btn-outline-primary mt-2">View Brief</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
-                <div class="project-item h-100">
-                    <img src="{% static 'images/research3.jpg' %}" class="card-img-top project-image" alt="Legal Analysis">
-                    <div class="p-4">
-                        <h4>Comparative Privacy Law Analysis</h4>
-                        <p>Independent Research Project (2023)</p>
-                        <p>A comparative analysis of privacy protection frameworks in the EU (GDPR) and United States, with recommendations for a comprehensive federal privacy statute.</p>
-                        <a href="#" class="btn btn-outline-primary mt-2">Read Analysis</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -356,46 +616,19 @@
     <div class="container">
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Skills & Competencies</h2>
         <div class="row">
-            <div class="col-md-6" data-aos="fade-right">
-                <div class="skill-category">
-                    <h4 class="mb-3">Legal Research & Writing</h4>
-                    <span class="skill-pill">Legal Research</span>
-                    <span class="skill-pill">Brief Writing</span>
-                    <span class="skill-pill">Case Analysis</span>
-                    <span class="skill-pill">Legal Memoranda</span>
-                    <span class="skill-pill">Bluebook Citation</span>
-                    <span class="skill-pill">Motion Practice</span>
+            {% for category in skill_categories %}
+                <div class="col-md-6" data-aos="fade-{% if forloop.counter0|divisibleby:2 %}right{% else %}left{% endif %}">
+                    <div class="skill-category">
+                        <h4 class="mb-3">{{ category.name }}</h4>
+                        {% for skill in category.skills.all %}
+                            <span class="skill-pill">{{ skill.name }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
-                
-                <div class="skill-category">
-                    <h4 class="mb-3">Subject Matter Expertise</h4>
-                    <span class="skill-pill">Constitutional Law</span>
-                    <span class="skill-pill">Civil Rights</span>
-                    <span class="skill-pill">First Amendment</span>
-                    <span class="skill-pill">Privacy Law</span>
-                    <span class="skill-pill">Administrative Law</span>
-                </div>
-            </div>
-            
-            <div class="col-md-6" data-aos="fade-left">
-                <div class="skill-category">
-                    <h4 class="mb-3">Legal Technology</h4>
-                    <span class="skill-pill">Westlaw</span>
-                    <span class="skill-pill">LexisNexis</span>
-                    <span class="skill-pill">Bloomberg Law</span>
-                    <span class="skill-pill">PACER</span>
-                    <span class="skill-pill">Legal Analytics</span>
-                </div>
-                
-                <div class="skill-category">
-                    <h4 class="mb-3">Professional Skills</h4>
-                    <span class="skill-pill">Oral Advocacy</span>
-                    <span class="skill-pill">Client Counseling</span>
-                    <span class="skill-pill">Depositions</span>
-                    <span class="skill-pill">Trial Preparation</span>
-                    <span class="skill-pill">Negotiation</span>
-                </div>
-            </div>
+                {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                    </div><div class="row mt-4">
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -408,34 +641,15 @@
             <div class="col-lg-10 mx-auto">
                 <div class="experience-item" data-aos="fade-up">
                     <ul class="list-group list-group-flush">
+                        {% for award in awards %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="mb-1">Best Oralist, Harlan Fiske Stone Moot Court Competition</h5>
-                                <p class="mb-0">Excellence in appellate advocacy</p>
+                                <h5 class="mb-1">{{ award.title }}</h5>
+                                <p class="mb-0">{{ award.description }}</p>
                             </div>
-                            <span class="date-badge">2024</span>
+                            <span class="date-badge">{{ award.year }}</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-1">Hamilton Fellowship for Constitutional Law</h5>
-                                <p class="mb-0">Merit-based scholarship for excellence in constitutional law studies</p>
-                            </div>
-                            <span class="date-badge">2023</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-1">Best Brief Award, National Privacy Law Competition</h5>
-                                <p class="mb-0">Top brief among 50+ law schools nationwide</p>
-                            </div>
-                            <span class="date-badge">2023</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-1">Harlan Fiske Stone Scholar</h5>
-                                <p class="mb-0">Academic excellence at Columbia Law School</p>
-                            </div>
-                            <span class="date-badge">2023-2024</span>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -443,13 +657,38 @@
     </div>
 </section>
 
-
 <script>
     // Initialize AOS (Animate On Scroll)
     AOS.init({
         duration: 800,
         easing: 'ease-in-out',
         once: true
+    });
+    
+    // Typed.js for text animation
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load Typed.js script dynamically
+        var typedScript = document.createElement('script');
+        typedScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js';
+        typedScript.async = true;
+        document.head.appendChild(typedScript);
+        
+        typedScript.onload = function() {
+            // Initialize Typed.js when script is loaded
+            var typed = new Typed('.typed-text', {
+                strings: [
+                    "{{ profile.title }}", 
+                    "Constitutional Law Specialist",
+                    "Legal Researcher",
+                    "Human Rights Advocate"
+                ],
+                typeSpeed: 50,
+                backSpeed: 30,
+                backDelay: 2000,
+                loop: true,
+                showCursor: true
+            });
+        };
     });
 </script>
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Case Studies{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <h1 class="mb-4">Case Studies</h1>
+
+            {% if case_studies %}
+                <ul class="list-group">
+                    {% for case in case_studies %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">{{ case.title }}</h5>
+                            <small class="text-muted">{{ case.created_at|date:"F j, Y" }}</small>
+                        </div>
+                        <a href="{% url 'case_study_detail' case.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No case studies available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

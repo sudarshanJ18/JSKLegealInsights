@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Documents Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Uploaded Legal Documents</h2>
+
+    {% if documents %}
+        <div class="list-group">
+            {% for doc in documents %}
+                <div class="list-group-item">
+                    <h5>{{ doc.title }}</h5>
+                    <p class="mb-1">{{ doc.description }}</p>
+                    <a href="{{ doc.file.url }}" target="_blank" class="btn btn-sm btn-primary mt-2">View Document</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No documents have been uploaded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -191,6 +191,7 @@ class CaseStudy(models.Model):
     summary = models.TextField()  # Short description of the case study
     content = models.TextField()  # Detailed content of the case study
     image = models.ImageField(upload_to='case_studies/', blank=True, null=True)  # Optional image
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='case_studies', null=True)  # Author of the case study
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when created
     updated_at = models.DateTimeField(auto_now=True)  # Timestamp when updated
 
@@ -201,7 +202,7 @@ class CaseStudy(models.Model):
         verbose_name = "Case Study"
         verbose_name_plural = "Case Studies"
         ordering = ['-created_at']
-
+        
 class ContactMessage(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
