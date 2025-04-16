@@ -11,6 +11,7 @@ urlpatterns = [
     path('blog/<int:post_id>/', views.blog_detail, name='blog_detail'),
     path('about/', views.about_view, name='about'),
     path('case-studies/', views.case_studies, name='case_studies'),
+    path('case-studies/', views.case_studies, name='case_study_list'),
     path('case-studies/<int:case_id>/', views.case_study_detail, name='case_study_detail'),
     path('resources/', views.resources, name='resources'),
     path('contact/', views.contact_view, name='contact'),
@@ -45,6 +46,8 @@ urlpatterns = [
     path('dashboard/documents/', views.dashboard_documents, name='dashboard_documents'),
     path('dashboard/documents/<int:document_id>/', views.dashboard_documents, name='dashboard_documents'),
     path('dashboard/delete/<str:model_name>/<int:item_id>/', views.delete_item, name='delete_item'),
+    path('case-studies/<int:pk>/', views.case_study_detail, name='case_study_detail'),
+    
 ]
     
 

@@ -4,7 +4,62 @@
 {% block title %} - Resources{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <style>
+    /* Custom animations and effects */
+    .page-intro {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .section-heading {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 2rem;
+    }
+    
+    .section-heading::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+    
+    /* Progress bar */
+    .progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        z-index: 1000;
+    }
+    
+    .progress-bar {
+        height: 4px;
+        background: var(--primary);
+        width: 0%;
+    }
+    
     /* Custom styles for the Resources page */
     .resources-section {
         padding: 80px 0;
@@ -17,6 +72,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         margin-bottom: 30px;
+        height: 100%;
     }
 
     .resource-card:hover {
@@ -27,6 +83,12 @@
     .resource-card img {
         height: 200px;
         object-fit: cover;
+        width: 100%;
+        transition: transform 0.5s ease;
+    }
+    
+    .resource-card:hover img {
+        transform: scale(1.05);
     }
 
     .resource-card .card-body {
@@ -43,6 +105,12 @@
     .resource-card .card-text {
         font-size: 1rem;
         color: #555;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
     }
 
     .resource-card .btn-resource {
@@ -53,11 +121,13 @@
         text-transform: uppercase;
         font-weight: bold;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .resource-card .btn-resource:hover {
         background-color: var(--primary);
         transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
 
     /* Interactive tools section */
@@ -73,6 +143,7 @@
         background-color: white;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        height: 100%;
     }
 
     .tool-item:hover {
@@ -84,6 +155,11 @@
         font-size: 3rem;
         color: var(--accent);
         margin-bottom: 20px;
+        transition: transform 0.5s ease;
+    }
+    
+    .tool-item:hover i {
+        transform: scale(1.1) rotate(5deg);
     }
 
     .tool-item h4 {
@@ -168,20 +244,91 @@
         margin-top: 30px;
         text-align: center;
     }
+    
+    /* Articles section enhanced */
+    .articles-section .card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        height: 100%;
+    }
+    
+    .articles-section .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .articles-section .card-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: var(--primary);
+    }
+    
+    .articles-section .card-text {
+        font-size: 1rem;
+        color: #555;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
+    }
+    
+    .articles-section .btn-primary {
+        background-color: var(--primary);
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .articles-section .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .articles-section .btn-secondary {
+        background-color: var(--secondary);
+        border: none;
+        padding: 8px 25px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    
+    .articles-section .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Database Resources Section -->
- 
+<!-- Reading Progress Bar -->
+<div class="progress-container">
+    <div class="progress-bar" id="readingProgress"></div>
+</div>
 
+<!-- Page Intro -->
+<div class="page-intro text-center container py-4">
+    <h1 class="animate__animated animate__fadeIn">Legal Resources</h1>
+</div>
+
+<!-- Database Resources Section -->
 {% if db_resources %}
 <section class="resources-section" id="db-resources">
     <div class="container">
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Resources</h2>
         <div class="row">
             {% for resource in db_resources %}
-            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
                 <div class="resource-card">
                     <img src="{{ resource.image.url }}" alt="{{ resource.title }}" class="card-img-top">
                     <div class="card-body">
@@ -203,7 +350,7 @@
         <h2 class="section-heading text-center mb-5" data-aos="fade-up">Latest Legal News</h2>
         <div class="row">
             {% for resource in news_resources|slice:":3" %}
-            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
                 <div class="resource-card">
                     <img src="{{ resource.image }}" alt="{{ resource.title }}" class="card-img-top">
                     <div class="card-body">
@@ -265,11 +412,11 @@
 <!-- Legal Articles Section -->
 <section class="articles-section" id="articles">
     <div class="container">
-        <h2>Legal Articles & Guides</h2>
+        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Legal Articles & Guides</h2>
         
         <div class="row">
             {% for article in articles|slice:":3" %} 
-            <div class="col-md-4">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ article.title }}</h5>
@@ -278,14 +425,38 @@
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="empty-message">No articles available at this time.</p>
+            </div>
             {% endfor %}
         </div>
     
-        <div class="text-center mt-3">
+        <div class="text-center mt-3" data-aos="fade-up">
             <a href="{% url 'articles_list' %}" class="btn btn-secondary">View All Articles</a>
         </div>
     </div>
 </section>
+{% endblock %}
 
-
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Reading progress bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        });
+    });
+</script>
 {% endblock %}

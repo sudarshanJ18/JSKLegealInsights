@@ -3,42 +3,254 @@
 
 {% block title %} - Home{% endblock %}
 
-
 {% block extra_css %}
 <style>
-    .hero-section {
-        background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), url('https://source.unsplash.com/random/1920x1080/?courthouse') no-repeat center center/cover;
+    /* Hero Banner - Professional Design */
+    .hero-banner {
+        background: linear-gradient(90deg,rgb(133, 138, 169) 0%,rgb(106, 103, 109) 100%);
         color: white;
-        padding: 120px 0;
-        margin-top: -80px;
+        position: relative;
+        z-index: 100;
+        overflow: hidden;
+        height: 500px;
     }
-
-    .hero-section h1 {
-        font-size: 3.5rem;
-        font-weight: bold;
-        margin-bottom: 20px;
+    
+    /* Animated background elements */
+    .banner-shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
     }
-
-    .hero-section p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
+    
+    .shape-1 {
+        width: 100px;
+        height: 100px;
+        top: -30px;
+        right: 20%;
+        animation: float 8s infinite ease-in-out;
     }
-
+    
+    .shape-2 {
+        width: 60px;
+        height: 60px;
+        bottom: -20px;
+        left: 10%;
+        animation: float 8s infinite ease-in-out 1s;
+    }
+    
+    .shape-3 {
+        width: 80px;
+        height: 80px;
+        top: 40%;
+        right: 30%;
+        animation: float 8s infinite ease-in-out 2s;
+    }
+    
+    /* Content layout */
+    .banner-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        position: relative;
+    }
+    
+    /* Text content side */
+    .banner-content {
+        width: 50%;
+        padding-left: 8%;
+        animation: fadeInLeft 1s forwards;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .banner-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .banner-subtitle {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        max-width: 90%;
+    }
+    
+    .accent-line {
+        height: 3px;
+        width: 80px;
+        background: #FF3366;
+        margin-bottom: 25px;
+    }
+    
+    /* Interactive Scales of Justice */
+    .scales-icon {
+        display: inline-block;
+        height: 80px;
+        width: 80px;
+        margin-right: 15px;
+        vertical-align: middle;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Button styles */
+    .banner-buttons {
+        margin-top: 30px;
+    }
+    
+    .btn-banner {
+        display: inline-block;
+        padding: 12px 28px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.4s ease;
+        margin-right: 15px;
+    }
+    
+    .btn-primary {
+        background: #FF3366;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+    
+    .btn-outline {
+        border: 2px solid white;
+        color: white;
+        background: transparent;
+    }
+    
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        color: white;
+    }
+    
+    /* Image side */
+    .banner-image-container {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .geometric-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    
+    .diagonal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,51,102,0.4) 0%, rgba(98,17,181,0.2) 100%);
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+        z-index: 2;
+    }
+    
+    .profile-image {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        animation: subtle-zoom 20s infinite alternate ease-in-out;
+    }
+    
+    /* Professional image caption */
+    .image-caption {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 12px 20px;
+        border-radius: 5px;
+        z-index: 3;
+        font-size: 0.9rem;
+        border-left: 4px solid #FF3366;
+    }
+    
+    .image-caption h4 {
+        margin: 0;
+        font-weight: 700;
+    }
+    
+    .image-caption p {
+        margin: 5px 0 0;
+        opacity: 0.9;
+    }
+    
+    /* Section Styles - Rest of the code remains the same */
     .latest-posts-section, .latest-cases-section {
         padding: 60px 0;
+        opacity: 0;
+        transition: all 0.8s ease;
     }
 
-    .latest-posts-section h2, .latest-cases-section h2 {
-        margin-bottom: 40px;
+    .section-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .section-header {
         text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        padding-bottom: 15px;
     }
 
+    .section-header:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 3px;
+        background: var(--primary);
+        transition: width 1s ease;
+    }
+
+    .section-header.animated:after {
+        width: 80px;
+    }
+
+    /* Card Styles */
     .card {
         border: none;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+        transition: all 0.5s ease;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .card-visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .card:hover {
@@ -49,6 +261,11 @@
     .card-img-top {
         height: 200px;
         object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05);
     }
 
     .card-title {
@@ -70,33 +287,240 @@
         text-transform: uppercase;
         font-weight: bold;
         transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-read-more:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--primary);
+        transition: all 0.4s ease;
+        z-index: -1;
     }
 
     .btn-read-more:hover {
-        background-color: var(--primary);
+        color: white;
         transform: translateY(-2px);
+    }
+
+    .btn-read-more:hover:before {
+        left: 0;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 991px) {
+        .hero-banner {
+            height: auto;
+            padding: 60px 0;
+        }
+        
+        .banner-container {
+            flex-direction: column;
+        }
+        
+        .banner-content {
+            width: 90%;
+            padding: 0;
+            text-align: center;
+            margin: 0 auto 50px;
+        }
+        
+        .accent-line {
+            margin: 0 auto 25px;
+        }
+        
+        .banner-image-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin-top: 30px;
+        }
+        
+        .geometric-mask, .diagonal-overlay {
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+        
+        .image-caption {
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            text-align: center;
+        }
+    }
+    
+    /* Animations */
+    @keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-10px) rotate(5deg);
+        }
+    }
+    
+    @keyframes subtle-zoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.1);
+        }
+    }
+    
+    @keyframes ripple {
+        0% {
+            transform: scale(0, 0);
+            opacity: 1;
+        }
+        20% {
+            transform: scale(25, 25);
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: scale(40, 40);
+        }
     }
 </style>
 {% endblock %}
 
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('section-header')) {
+                        entry.target.classList.add('animated');
+                    } else if (entry.target.classList.contains('animated-section')) {
+                        entry.target.classList.add('section-visible');
+                    } else if (entry.target.classList.contains('card')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('card-visible');
+                        }, entry.target.dataset.delay || 0);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Observe section headers
+        document.querySelectorAll('.section-header').forEach(header => {
+            observer.observe(header);
+        });
+
+        // Observe sections
+        document.querySelectorAll('.animated-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Observe cards with delay
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.dataset.delay = index * 150;
+            observer.observe(card);
+        });
+        
+        // Mouse parallax effect for banner
+        const banner = document.querySelector('.hero-banner');
+        const shapes = document.querySelectorAll('.banner-shape');
+        
+        banner.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 20;
+                const xPos = (0.5 - x) * speed;
+                const yPos = (0.5 - y) * speed / 2;
+                
+                shape.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+    });
+</script>
+{% endblock %}
+
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1>Welcome to JSK Legal Insights</h1>
-                <p>Exploring the intersection of law, justice, and human rights through research, analysis, and advocacy.</p>
-                <a href="{% url 'about' %}" class="btn btn-primary btn-lg">Learn More</a>
+<!-- Professional Animated Hero Banner - Combined Solution -->
+<section class="hero-banner">
+    <!-- Animated background shapes -->
+    <div class="banner-shape shape-1"></div>
+    <div class="banner-shape shape-2"></div>
+    <div class="banner-shape shape-3"></div>
+    
+    <div class="container banner-container">
+        <!-- Content side -->
+        <div class="banner-content">
+            <h1 class="banner-title">
+                <!-- Animated scales icon -->
+                <svg class="scales-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Base -->
+                    <rect x="47.5" y="80" width="5" height="20" fill="#ffffff"/>
+                    <!-- Crossbar -->
+                    <rect x="25" y="55" width="50" height="3" fill="#ffffff"/>
+                    <!-- Left Scale -->
+                    <circle cx="30" cy="70" r="10" fill="transparent" stroke="#ffffff" stroke-width="2"/>
+                    <!-- Right Scale -->
+                    <circle cx="70" cy="65" r="10" fill="transparent" stroke="#ffffff" stroke-width="2"/>
+                    <!-- Center -->
+                    <circle cx="50" cy="55" r="5" fill="#ffffff"/>
+                    <!-- Support lines -->
+                    <line x1="30" y1="58" x2="30" y2="70" stroke="#ffffff" stroke-width="2"/>
+                    <line x1="70" y1="58" x2="70" y2="65" stroke="#ffffff" stroke-width="2"/>
+                </svg>
+                Welcome to JSK Legal Insights
+            </h1>
+            
+            <div class="accent-line"></div>
+            
+            <p class="banner-subtitle">
+                Exploring the intersection of law, justice, and human rights through research, analysis, and advocacy. Stay informed with the latest legal developments and thought leadership.
+            </p>
+            
+            <div class="banner-buttons">
+                <a href="{% url 'about' %}" class="btn-banner btn-primary">Get in Touch</a>
+                
+            </div>
+        </div>
+        
+        <!-- Image side with geometric shape -->
+        <div class="banner-image-container">
+            <div class="geometric-mask">
+                <img src="https://i.postimg.cc/fTRJV1wj/JAYA.jpg" class="profile-image" alt="JSK Legal Expert">
+
+            </div>
+            <div class="diagonal-overlay"></div>
+            <div class="image-caption">
+                <h4>Jaya Sai Swathi Kamalini</h4>
+                <p>Law Student</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Latest Blog Posts Section -->
-<section class="latest-posts-section">
+<section class="latest-posts-section animated-section">
     <div class="container">
-        <h2>Latest Blog Posts</h2>
+        <h2 class="section-header">Latest Blog Posts</h2>
         <div class="row">
             {% for post in latest_posts %}
             <div class="col-md-4 mb-4">
@@ -115,9 +539,9 @@
 </section>
 
 <!-- Latest Case Studies Section -->
-<section class="latest-cases-section">
+<section class="latest-cases-section animated-section">
     <div class="container">
-        <h2>Latest Case Studies</h2>
+        <h2 class="section-header">Latest Case Studies</h2>
         <div class="row">
             {% for case in latest_cases %}
             <div class="col-md-4 mb-4">

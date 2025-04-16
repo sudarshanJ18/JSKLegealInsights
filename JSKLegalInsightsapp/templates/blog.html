@@ -1,23 +1,86 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} - Blog{% endblock %}
+{% block title %} - Blogs{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <style>
+    /* Enhanced styling while maintaining original structure */
+    .blog-header {
+        background: linear-gradient(135deg, var(--primary), #34495e);
+        color: white;
+        padding: 3rem 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .blog-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/pattern-overlay.png' %}");
+        opacity: 0.1;
+        animation: moveBackground 30s linear infinite;
+    }
+    
+    @keyframes moveBackground {
+        0% { background-position: 0 0; }
+        100% { background-position: 100px 100px; }
+    }
+    
+    .section-heading {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    
+    .section-heading::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+    
     .blog-card {
         height: 100%;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border-radius: 10px;
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
     
     .blog-image {
         height: 200px;
         object-fit: cover;
         width: 100%;
+        transition: transform 0.5s ease;
+    }
+    
+    .blog-card:hover .blog-image {
+        transform: scale(1.05);
     }
     
     .blog-meta {
         font-size: 0.9rem;
         color: #6c757d;
+        margin-bottom: 0.8rem;
     }
     
     .blog-excerpt {
@@ -26,17 +89,116 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #495057;
+        line-height: 1.6;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .btn-primary {
+        background-color: var(--primary);
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        background-color: #34495e;
+    }
+    
+    .pagination {
+        gap: 5px;
+    }
+    
+    .page-link {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        border: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .page-item:first-child .page-link,
+    .page-item:last-child .page-link {
+        border-radius: 30px;
+        width: auto;
+        padding: 0 1rem;
+    }
+    
+    .page-item.active .page-link {
+        background-color: var(--primary);
+    }
+    
+    .page-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+    }
+    
+    /* Progress bar */
+    .progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        z-index: 1000;
+    }
+    
+    .progress-bar {
+        height: 4px;
+        background: var(--primary);
+        width: 0%;
+    }
+    
+    /* Animated page intro */
+    .page-intro {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Reading Progress Bar -->
+<div class="progress-container">
+    <div class="progress-bar" id="readingProgress"></div>
+</div>
+
 <div class="container py-5">
-    <div class="row mb-5" data-aos="fade-up">
-        <div class="col-12 text-center">
-            <h1 class="section-heading">Legal Insights Blog</h1>
-            <p class="lead">Exploring current legal topics and providing valuable insights for legal professionals and enthusiasts.</p>
-        </div>
+    <!-- Page Intro -->
+    <div class="page-intro mb-4">
+        <h1 class="text-center section-heading animate__animated animate__fadeIn">Blogs</h1>
     </div>
     
     <!-- Blog Posts -->
@@ -45,9 +207,9 @@
         <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
             <div class="card blog-card">
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top blog-image" alt="{{ post.title }}">
+                <img src="{{ post.image.url }}" class="blog-image" alt="{{ post.title }}">
                 {% else %}
-                <img src="{% static 'images/blog-placeholder.jpg' %}" class="card-img-top blog-image" alt="Placeholder">
+                <img src="{% static 'images/blog-placeholder.jpg' %}" class="blog-image" alt="Placeholder">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
@@ -71,7 +233,7 @@
     
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-    <div class="row mt-5">
+    <div class="row mt-5" data-aos="fade-up">
         <div class="col-12">
             <nav>
                 <ul class="pagination justify-content-center">
@@ -116,4 +278,26 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Reading progress bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        });
+    });
+</script>
 {% endblock %}

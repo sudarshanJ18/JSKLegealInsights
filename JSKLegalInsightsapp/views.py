@@ -98,21 +98,22 @@ def about(request):
 
 def about_view(request):
     # Get Emily's profile - we can identify it by email or name
-    emily_profile = get_object_or_404(Profile, name="Emily Johnson")
+    profile = get_object_or_404(Profile)
     
     # Get all skill categories
     skill_categories = SkillCategory.objects.all().prefetch_related('skills')
     
     # Create a context dictionary with all the data
     context = {
-        'profile': emily_profile,
-        'educations': Education.objects.filter(profile=emily_profile).order_by('-start_year'),
-        'experiences': LegalExperience.objects.filter(profile=emily_profile).order_by('-start_date'),
-        'publications': LegalPublication.objects.filter(profile=emily_profile).order_by('-year'),
+        'profile': profile,
+        'educations': Education.objects.filter(profile=profile).order_by('-start_year'),
+        'experiences': LegalExperience.objects.filter(profile=profile).order_by('-start_date'),
+        'publications': LegalPublication.objects.filter(profile=profile).order_by('-year'),
         'skill_categories': skill_categories,
-        'awards': LegalAward.objects.filter(profile=emily_profile).order_by('-year'),
-        'social_links': SocialLink.objects.filter(profile=emily_profile),
+        'awards': LegalAward.objects.filter(profile=profile).order_by('-year'),
+        'social_links': SocialLink.objects.filter(profile=profile),
     }
+    
     
     return render(request, 'about.html', context)
 
@@ -129,6 +130,11 @@ def case_study_detail(request, case_id):
     Case study detail view. Displays a single case study.
     """
     case = get_object_or_404(CaseStudy, id=case_id)
+    
+    # Add this line to provide a default author if needed
+    if not hasattr(case, 'author'):
+        case.author = None  # Or some default User object
+        
     return render(request, 'case_study_detail.html', {'case': case})
 
 def resources(request):
@@ -747,3 +753,7 @@ def delete_item(request, model_name, item_id):
     
     # Default fallback
     return redirect('dashboard')
+
+def case_study_list(request):
+    case_studies = CaseStudy.objects.all().order_by('-created_at')
+    return render(request, 'case_study_list.html', {'case_studies': case_studies})

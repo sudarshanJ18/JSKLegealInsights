@@ -1,114 +1,340 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
 <!-- Include AOS for animations -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
 <style>
-    /* Custom Styling */
+    /* Contact Banner Styles */
     .contact-header {
-        text-align: center;
-        padding: 60px 0;
-        background: linear-gradient(to right, #198754, #20c997);
+        position: relative;
+        min-height: 300px;
+        background: linear-gradient(135deg, #2c3e50 0%, #4b6cb7 100%);
         color: white;
-        animation: fadeInDown 1s ease-in-out;
+        margin-bottom: 50px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
     }
 
-    .contact-header h1 {
+    /* Animated shapes background */
+    .animated-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: float 15s infinite ease-in-out;
+    }
+    
+    .shape-1 {
+        width: 120px;
+        height: 120px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .shape-2 {
+        width: 80px;
+        height: 80px;
+        bottom: 10%;
+        right: 20%;
+        animation-delay: 2s;
+    }
+    
+    .shape-3 {
+        width: 180px;
+        height: 180px;
+        bottom: -50px;
+        left: 35%;
+        animation-delay: 4s;
+    }
+    
+    .shape-4 {
+        width: 60px;
+        height: 60px;
+        top: 30%;
+        right: 15%;
+        animation-delay: 6s;
+    }
+
+    /* Banner content container */
+    .banner-container {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        width: 100%;
+    }
+
+    .contact-title {
         font-size: 2.5rem;
         font-weight: bold;
+        margin-bottom: 20px;
     }
 
+    .contact-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Contact Form Styles */
     .contact-section {
         padding: 60px 0;
-        background: #f8f9fa;
+        background: #fff;
     }
 
     .contact-form {
-        background: white;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .contact-btn {
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    .contact-form:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
-    .contact-btn:hover {
-        transform: scale(1.05);
+    .contact-form .form-control {
+        border-radius: 4px;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #e9ecef;
+    }
+
+    .contact-form .form-control:focus {
+        box-shadow: none;
+        border-color: #4b6cb7;
+    }
+
+    .contact-form .form-label {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .contact-form textarea.form-control {
+        min-height: 150px;
+    }
+
+    .btn-submit {
+        background: #4b6cb7;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        border: none;
     }
 
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #182848 0%, #4b6cb7 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Social Media Section */
+    .social-section {
+        background: #f8f9fa;
+        padding: 50px 0;
+        text-align: center;
+    }
+
+    .social-section h3 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 15px;
+        display: inline-block;
+    }
+
+    .social-section h3:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: #4b6cb7;
+    }
+
+    .social-description {
+        max-width: 500px;
+        margin: 0 auto 25px;
+        color: #6c757d;
+    }
+
+    .social-icons {
+        margin-top: 20px;
+    }
+
+    .social-icon-lg {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #4b6cb7;
+        color: white;
+        margin: 0 10px;
+        font-size: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon-lg:hover {
+        transform: translateY(-5px);
+        background: #2c3e50;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Alert Messages Styling */
+    .alert {
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    /* Animations */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        50% {
+            transform: translateY(-20px) rotate(10deg);
+        }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .contact-title {
+            font-size: 2rem;
+        }
+        
+        .contact-subtitle {
+            font-size: 1rem;
+        }
+        
+        .social-icon-lg {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
         }
     }
 </style>
 
-<!-- Header Section -->
+<!-- Contact Banner -->
 <div class="contact-header">
-    <h1 data-aos="fade-down">Contact & Collaborate</h1>
-    <p data-aos="fade-up">Connect with legal professionals and students.</p>
+    <!-- Animated Background Shapes -->
+    <div class="animated-bg">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+    
+    <div class="container banner-container">
+        <h1 class="contact-title" data-aos="fade-down">Contact & Collaborate</h1>
+        <p class="contact-subtitle" data-aos="fade-up" data-aos-delay="200">
+            I would love to hear from you! Whether you have a question, feedback, or just want to say hi, feel free to reach out. Let's connect and explore opportunities together.
+        </p>
+    </div>
 </div>
 
-<!-- Message Alerts -->
-<div class="container mt-3">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+<!-- Alert Messages Section -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 </div>
 
-<!-- Contact Section -->
-<div class="container contact-section">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="contact-form" data-aos="fade-up">
-                <h4 class="mb-4 text-center">Get in Touch with Me</h4>
-                
-                <form method="POST" action="{% url 'contact' %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Your Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Your Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" placeholder="Type your message here..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100 contact-btn">Send Message</button>
-                </form>
+<!-- Contact Form Section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="contact-form" data-aos="fade-up">
+                    <h2 class="text-center mb-4">Get in Touch with Me</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn-submit">Send Message</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Social Media Section -->
-    <div class="text-center mt-5" data-aos="fade-up">
-        <h5>Follow Us</h5>
-        <p>Stay connected through our social channels.</p>
-        <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-twitter"></i> Twitter</a>
-        <a href="#" class="btn btn-outline-dark"><i class="fab fa-github"></i> GitHub</a>
+<!-- Social Media Section -->
+<section class="social-section">
+    <div class="container">
+        <h3 data-aos="fade-up">Follow Me</h3>
+        <p class="social-description" data-aos="fade-up" data-aos-delay="100">
+            Stay connected through social channels.
+        </p>
+        <div class="social-icons" data-aos="fade-up" data-aos-delay="200">
+            <a href="#" class="social-icon-lg"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon-lg"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon-lg"><i class="fab fa-github"></i></a>
+        </div>
     </div>
-</div>
+</section>
 
 <script>
-    AOS.init();  
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
 </script>
 {% endblock %}

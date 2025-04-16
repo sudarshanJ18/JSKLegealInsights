@@ -4,10 +4,47 @@
 {% block title %} - Case Studies{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <style>
     /* Custom styles for the Case Studies page */
+    .page-intro {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .case-studies-section {
         padding: 80px 0;
+    }
+
+    .section-heading {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 2rem;
+    }
+    
+    .section-heading::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 2px;
     }
 
     .case-study-card {
@@ -17,6 +54,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         margin-bottom: 30px;
+        height: 100%;
     }
 
     .case-study-card:hover {
@@ -27,6 +65,12 @@
     .case-study-card img {
         height: 200px;
         object-fit: cover;
+        width: 100%;
+        transition: transform 0.5s ease;
+    }
+    
+    .case-study-card:hover img {
+        transform: scale(1.05);
     }
 
     .case-study-card .card-body {
@@ -43,6 +87,12 @@
     .case-study-card .card-text {
         font-size: 1rem;
         color: #555;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
     }
 
     .case-study-card .btn-read-more {
@@ -53,23 +103,50 @@
         text-transform: uppercase;
         font-weight: bold;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .case-study-card .btn-read-more:hover {
         background-color: var(--primary);
         transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Progress bar */
+    .progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        z-index: 1000;
+    }
+    
+    .progress-bar {
+        height: 4px;
+        background: var(--primary);
+        width: 0%;
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Reading Progress Bar -->
+<div class="progress-container">
+    <div class="progress-bar" id="readingProgress"></div>
+</div>
+
 <!-- Case Studies Section -->
 <section class="case-studies-section" id="case-studies">
     <div class="container">
-        <h2 class="section-heading text-center mb-5" data-aos="fade-up">Case Studies</h2>
+        <div class="page-intro mb-4">
+            <h2 class="section-heading text-center animate__animated animate__fadeIn">Case Studies</h2>
+        </div>
+        
         <div class="row">
             {% for case in case_studies %}
-            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
                 <div class="case-study-card">
                     <img src="{{ case.image.url }}" alt="{{ case.title }}" class="card-img-top">
                     <div class="card-body">
@@ -79,8 +156,34 @@
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No case studies available at the moment. Please check back soon!</p>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Reading progress bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        });
+    });
+</script>
 {% endblock %}

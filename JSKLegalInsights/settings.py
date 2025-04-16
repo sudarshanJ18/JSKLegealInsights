@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")  # Ensure it's set in .env
 DEBUG = "False"  # Set False in production
 
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")  # Set in .env
+ALLOWED_HOSTS = ['.onrender.com']# Set in .env
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -70,6 +70,11 @@ DATABASES = {
         'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+
+CRON_CLASSES = [
+    "JSKLegalInsightsapp.cron.FetchLegalDataCronJob",
+]
+
 
 
 # Authentication
