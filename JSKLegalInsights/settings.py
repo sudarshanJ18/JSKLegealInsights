@@ -1,19 +1,19 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Security
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")  # Ensure it's set in .env
-DEBUG = "False"  # Set False in production
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"  # Properly convert string to boolean
 
-
-ALLOWED_HOSTS = ['.onrender.com']# Set in .env
+# ALLOWED_HOSTS configuration
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -63,19 +63,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'JSKLegalInsights.wsgi.application'
 
-
+# Database configuration - PostgreSQL for production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,  # Keep connections alive for 10 minutes
+        ssl_require=True,  # Require SSL for secure connections
+    )
 }
 
 CRON_CLASSES = [
     "JSKLegalInsightsapp.cron.FetchLegalDataCronJob",
 ]
-
-
 
 # Authentication
 LOGIN_URL = '/admin/login/'
@@ -147,12 +146,14 @@ LOGGING = {
     },
 }
 
+# API Keys and External Services
 API_KEY = os.getenv("INDIAN_KANOON_API_KEY")
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
+NEWSDATA_API_KEY = os.getenv("NEWS_API_KEY")
+
+# Algolia Search Configuration
 ALGOLIA = {
     'APPLICATION_ID': os.getenv('ALGOLIA_APPLICATION_ID'),
     'API_KEY': os.getenv('ALGOLIA_API_KEY'),
     'INDEX_NAME': os.getenv('ALGOLIA_INDEX_NAME'),
 }
-
-NEWSDATA_API_KEY = os.getenv("NEWS_API_KEY")
