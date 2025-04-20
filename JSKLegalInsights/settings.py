@@ -9,11 +9,11 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")  # Ensure it's set in .env
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"  # Properly convert string to boolean
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS configuration
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -25,9 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'JSKLegalInsightsapp',
     'django_summernote',
-    'whitenoise.runserver_nostatic',  # For better static file serving
+    'whitenoise.runserver_nostatic',
     'algoliasearch_django',
     'rest_framework',
+    'storages',
 ]
 
 # Middleware
@@ -44,46 +45,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'JSKLegalInsights.urls'
 
-# Templates
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'JSKLegalInsightsapp' / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'JSKLegalInsights.wsgi.application'
-
 # Database configuration - PostgreSQL for production
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL'),
-#         conn_max_age=600,  # Keep connections alive for 10 minutes
-#         ssl_require=True,  # Require SSL for secure connections
-#     )
-# }
-# DATABASES = {
-    
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
+        default=os.getenv('DATABASE_URL')
     )
 }
+
 CRON_CLASSES = [
     "JSKLegalInsightsapp.cron.FetchLegalDataCronJob",
 ]
@@ -110,8 +78,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "JSKLegalInsightsapp/static"]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
+
+# Use S3 for media files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# AWS S3 settings
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', 'jsklegalinsights')
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_QUERYSTRING_AUTH = False  # Optional: Set to False to allow public access without token query strings
+
+# Ensure that media files go to the correct S3 bucket
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
 
 # Whitenoise for static file compression
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
