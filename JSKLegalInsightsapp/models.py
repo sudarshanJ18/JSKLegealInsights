@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Index
 
 class AboutPage(models.Model):
     title = models.CharField(max_length=255, default="About Us")
@@ -33,6 +34,9 @@ class Profile(models.Model):
     class Meta:
         verbose_name = "User Profile"
         verbose_name_plural = "User Profiles"
+        indexes = [
+            Index(fields=['email', 'location']),
+        ]
 
 class Education(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='education')
@@ -110,8 +114,6 @@ class LegalExperience(models.Model):
     def __str__(self):
         return f"{self.position} at {self.organization}"
     
-    
-        
     class Meta:
         verbose_name = "Legal Experience"
         verbose_name_plural = "Legal Experiences"
@@ -217,7 +219,6 @@ class ContactMessage(models.Model):
         verbose_name_plural = "Contact Messages"
         ordering = ['-created_at']
 
-
 class LegalResource(models.Model):
     title = models.CharField(max_length=255)
     summary = models.TextField()
@@ -232,7 +233,6 @@ class LegalResource(models.Model):
         verbose_name = "Legal Resource"
         verbose_name_plural = "Legal Resources"
         ordering = ['-created_at']
-
 
 class InteractiveTool(models.Model):
     name = models.CharField(max_length=255)
@@ -347,6 +347,7 @@ class Resource(models.Model):
     
     def __str__(self):
         return self.title
+
 class SiteConfiguration(models.Model):
     """Global site configuration and theme settings"""
     site_title = models.CharField(max_length=100, default="Portfolio", help_text="Title that appears in browser tab")
