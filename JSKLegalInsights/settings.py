@@ -64,14 +64,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'JSKLegalInsights.wsgi.application'
 
 # Database configuration - PostgreSQL for production
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL'),
+#         conn_max_age=600,  # Keep connections alive for 10 minutes
+#         ssl_require=True,  # Require SSL for secure connections
+#     )
+# }
+# DATABASES = {
+    
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,  # Keep connections alive for 10 minutes
-        ssl_require=True,  # Require SSL for secure connections
+        default=os.environ.get('DATABASE_URL')
     )
 }
-
 CRON_CLASSES = [
     "JSKLegalInsightsapp.cron.FetchLegalDataCronJob",
 ]

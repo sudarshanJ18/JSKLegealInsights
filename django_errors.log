@@ -6146,3 +6146,65 @@ WARNING 2025-04-19 16:09:32,863 log Bad Request: /favicon.ico
 WARNING 2025-04-19 16:09:32,865 basehttp "GET /favicon.ico HTTP/1.1" 400 78007
 WARNING 2025-04-19 16:10:42,084 log Not Found: /favicon.ico
 WARNING 2025-04-19 16:10:42,086 basehttp "GET /favicon.ico HTTP/1.1" 404 13406
+WARNING 2025-04-20 23:15:55,725 log Not Found: /media/blog_images/profile.png
+WARNING 2025-04-20 23:15:55,728 log Not Found: /media/blog_images/insta.jpg
+WARNING 2025-04-20 23:15:55,730 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:15:55,731 basehttp "GET /media/blog_images/profile.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:15:55,732 basehttp "GET /media/blog_images/insta.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:15:55,732 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:15:55,923 log Not Found: /favicon.ico
+WARNING 2025-04-20 23:15:55,924 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:07,189 log Not Found: /media/profiles/JAYA.jpg
+WARNING 2025-04-20 23:16:07,192 log Not Found: /media/research_images/images-41.jpeg
+WARNING 2025-04-20 23:16:07,194 log Not Found: /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg
+WARNING 2025-04-20 23:16:07,194 basehttp "GET /media/profiles/JAYA.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:07,196 log Not Found: /media/research_images/04-rape-decision27-300.jpg
+WARNING 2025-04-20 23:16:07,198 basehttp "GET /media/research_images/images-41.jpeg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:07,198 basehttp "GET /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:07,199 basehttp "GET /media/research_images/04-rape-decision27-300.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:19,327 log Not Found: /media/blog_images/profile.png
+WARNING 2025-04-20 23:16:19,328 log Not Found: /media/blog_images/insta.jpg
+WARNING 2025-04-20 23:16:19,329 basehttp "GET /media/blog_images/profile.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:16:19,330 basehttp "GET /media/blog_images/insta.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:17:32,782 log Not Found: /favicon.ico
+WARNING 2025-04-20 23:17:32,783 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+WARNING 2025-04-20 23:18:54,958 log Not Found: /media/blog_images/profile.png
+WARNING 2025-04-20 23:18:54,960 log Not Found: /media/blog_images/insta.jpg
+WARNING 2025-04-20 23:18:54,962 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:18:54,963 basehttp "GET /media/blog_images/profile.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:18:54,963 basehttp "GET /media/blog_images/insta.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:18:54,964 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:19,423 log Not Found: /media/profiles/JAYA.jpg
+WARNING 2025-04-20 23:19:19,426 log Not Found: /media/research_images/images-41.jpeg
+WARNING 2025-04-20 23:19:19,432 log Not Found: /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg
+WARNING 2025-04-20 23:19:19,433 basehttp "GET /media/profiles/JAYA.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:19,435 basehttp "GET /media/research_images/images-41.jpeg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:19,439 log Not Found: /media/research_images/04-rape-decision27-300.jpg
+WARNING 2025-04-20 23:19:19,439 basehttp "GET /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:19,441 basehttp "GET /media/research_images/04-rape-decision27-300.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:30,210 log Not Found: /media/blog_images/profile.png
+WARNING 2025-04-20 23:19:30,211 log Not Found: /media/blog_images/insta.jpg
+WARNING 2025-04-20 23:19:30,212 basehttp "GET /media/blog_images/profile.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:30,212 basehttp "GET /media/blog_images/insta.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:34,452 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:19:34,453 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:39,473 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:19:39,474 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:19:39,477 log Not Found: /static/images/pattern-overlay.png
+WARNING 2025-04-20 23:19:39,477 basehttp "GET /static/images/pattern-overlay.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:23,119 log Not Found: /media/blog_images/profile.png
+WARNING 2025-04-20 23:25:23,120 log Not Found: /media/blog_images/insta.jpg
+WARNING 2025-04-20 23:25:23,122 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:25:23,123 basehttp "GET /media/blog_images/profile.png HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:23,124 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:23,124 basehttp "GET /media/blog_images/insta.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:42,057 log Not Found: /media/profiles/JAYA.jpg
+WARNING 2025-04-20 23:25:42,059 log Not Found: /media/research_images/images-41.jpeg
+WARNING 2025-04-20 23:25:42,062 log Not Found: /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg
+WARNING 2025-04-20 23:25:42,064 basehttp "GET /media/profiles/JAYA.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:42,066 log Not Found: /media/research_images/04-rape-decision27-300.jpg
+WARNING 2025-04-20 23:25:42,066 basehttp "GET /media/research_images/images-41.jpeg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:42,068 basehttp "GET /media/research_images/Nullum-crimen-sine-lege-No-crime-without-law-1536x1024.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:25:42,070 basehttp "GET /media/research_images/04-rape-decision27-300.jpg HTTP/1.1" 404 179
+WARNING 2025-04-20 23:26:04,703 log Not Found: /media/case_studies/1706626100084.jpg
+WARNING 2025-04-20 23:26:04,704 basehttp "GET /media/case_studies/1706626100084.jpg HTTP/1.1" 404 179
